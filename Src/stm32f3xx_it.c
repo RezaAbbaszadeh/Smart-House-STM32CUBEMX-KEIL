@@ -38,7 +38,7 @@
 /* USER CODE BEGIN 0 */
 #include <stdbool.h>
 #include "LiquidCrystal.h"
-int lastTickKeypad = 0;
+int lastTickKeypad = 0, lastTickADC12 = 0, lastTickADC4=0;
 char pushedButton = 0;
 
 
@@ -52,6 +52,9 @@ void setKeypadInputs(bool set){
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
+extern ADC_HandleTypeDef hadc1;
+extern ADC_HandleTypeDef hadc2;
+extern ADC_HandleTypeDef hadc4;
 
 /******************************************************************************/
 /*            Cortex-M4 Processor Interruption and Exception Handlers         */ 
@@ -78,6 +81,35 @@ void SysTick_Handler(void)
 /* For the available peripheral interrupt handler names,                      */
 /* please refer to the startup file (startup_stm32f3xx.s).                    */
 /******************************************************************************/
+
+/**
+* @brief This function handles ADC1 and ADC2 interrupts.
+*/
+void ADC1_2_IRQHandler(void)
+{
+  /* USER CODE BEGIN ADC1_2_IRQn 0 */
+	if(HAL_GetTick() - lastTickADC12 > 1000){
+		lastTickADC12 = HAL_GetTick();
+		int adc = HAL_ADC_GetValue(&hadc1);
+		int adc2 = HAL_ADC_GetValue(&hadc2);
+		
+		char data[100];
+		int n = sprintf(data, "%d  %d", adc, adc2);
+		setCursor(0,0);
+		print("                ");
+		setCursor(0,0);
+		print(data);
+		
+	}
+	HAL_ADC_Start_IT(&hadc1);
+	HAL_ADC_Start_IT(&hadc2);
+  /* USER CODE END ADC1_2_IRQn 0 */
+  HAL_ADC_IRQHandler(&hadc1);
+  HAL_ADC_IRQHandler(&hadc2);
+  /* USER CODE BEGIN ADC1_2_IRQn 1 */
+
+  /* USER CODE END ADC1_2_IRQn 1 */
+}
 
 /**
 * @brief This function handles EXTI line[15:10] interrupts.
@@ -137,6 +169,30 @@ void EXTI15_10_IRQHandler(void)
   /* USER CODE BEGIN EXTI15_10_IRQn 1 */
 
   /* USER CODE END EXTI15_10_IRQn 1 */
+}
+
+/**
+* @brief This function handles ADC4 interrupt.
+*/
+void ADC4_IRQHandler(void)
+{
+  /* USER CODE BEGIN ADC4_IRQn 0 */
+	if(HAL_GetTick() - lastTickADC4 > 300){
+		lastTickADC4 = HAL_GetTick();
+		int adc = HAL_ADC_GetValue(&hadc4);
+		
+//		char data[100];
+//		int n = sprintf(data, "%d", adc);
+//		setCursor(0,1);
+//		print(data);
+		
+	}
+	HAL_ADC_Start_IT(&hadc4);
+  /* USER CODE END ADC4_IRQn 0 */
+  HAL_ADC_IRQHandler(&hadc4);
+  /* USER CODE BEGIN ADC4_IRQn 1 */
+
+  /* USER CODE END ADC4_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */
