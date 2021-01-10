@@ -88,21 +88,21 @@ void SysTick_Handler(void)
 void ADC1_2_IRQHandler(void)
 {
   /* USER CODE BEGIN ADC1_2_IRQn 0 */
-	if(HAL_GetTick() - lastTickADC12 > 1000){
-		lastTickADC12 = HAL_GetTick();
-		int adc = HAL_ADC_GetValue(&hadc1);
-		int adc2 = HAL_ADC_GetValue(&hadc2);
-		
-		char data[100];
-		int n = sprintf(data, "%d  %d", adc, adc2);
-		setCursor(0,0);
-		print("                ");
-		setCursor(0,0);
-		print(data);
-		
-	}
-	HAL_ADC_Start_IT(&hadc1);
-	HAL_ADC_Start_IT(&hadc2);
+//	if(HAL_GetTick() - lastTickADC12 > 1000){
+//		lastTickADC12 = HAL_GetTick();
+//		int adc = HAL_ADC_GetValue(&hadc1);
+//		int adc2 = HAL_ADC_GetValue(&hadc2);
+//		
+////		char data[100];
+////		int n = sprintf(data, "%d  %d", adc, adc2);
+////		setCursor(0,0);
+////		print("                ");
+////		setCursor(0,0);
+////		print(data);
+//		
+//	}
+//	HAL_ADC_Start_IT(&hadc1);
+//	HAL_ADC_Start_IT(&hadc2);
   /* USER CODE END ADC1_2_IRQn 0 */
   HAL_ADC_IRQHandler(&hadc1);
   HAL_ADC_IRQHandler(&hadc2);
@@ -124,6 +124,8 @@ void EXTI15_10_IRQHandler(void)
 		'7', '8', '9', 'C', 
 		'*', '0', '#', 'D', 
 	};
+	
+	HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_10);
 	
 	if(HAL_GetTick() - lastTickKeypad > 300){
 		for(int i = 0; i<4 ; i++){
@@ -162,6 +164,8 @@ void EXTI15_10_IRQHandler(void)
 	}
 
   /* USER CODE END EXTI15_10_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_10);
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_11);
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_12);
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_13);
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_14);
@@ -177,17 +181,17 @@ void EXTI15_10_IRQHandler(void)
 void ADC4_IRQHandler(void)
 {
   /* USER CODE BEGIN ADC4_IRQn 0 */
-	if(HAL_GetTick() - lastTickADC4 > 300){
-		lastTickADC4 = HAL_GetTick();
-		int adc = HAL_ADC_GetValue(&hadc4);
-		
+//	if(HAL_GetTick() - lastTickADC4 > 300){
+//		lastTickADC4 = HAL_GetTick();
+//		int adc = HAL_ADC_GetValue(&hadc4);
+//		
 //		char data[100];
 //		int n = sprintf(data, "%d", adc);
 //		setCursor(0,1);
 //		print(data);
-		
-	}
-	HAL_ADC_Start_IT(&hadc4);
+//		
+//	}
+//	HAL_ADC_Start_IT(&hadc4);
   /* USER CODE END ADC4_IRQn 0 */
   HAL_ADC_IRQHandler(&hadc4);
   /* USER CODE BEGIN ADC4_IRQn 1 */
