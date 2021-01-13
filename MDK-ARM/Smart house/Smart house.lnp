@@ -27,6 +27,8 @@
 "smart house\stm32f3xx_hal_uart.o"
 "smart house\stm32f3xx_hal_adc.o"
 "smart house\stm32f3xx_hal_adc_ex.o"
+"smart house\stm32f3xx_hal_rtc.o"
+"smart house\stm32f3xx_hal_rtc_ex.o"
 --library_type=microlib --strict --scatter "Smart house\Smart house.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

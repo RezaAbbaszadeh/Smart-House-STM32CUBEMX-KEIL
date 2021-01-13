@@ -31,6 +31,8 @@ smart house\liquidcrystal.o: ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_p
 smart house\liquidcrystal.o: ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_pcd_ex.h
 smart house\liquidcrystal.o: ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_pwr.h
 smart house\liquidcrystal.o: ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_pwr_ex.h
+smart house\liquidcrystal.o: ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_rtc.h
+smart house\liquidcrystal.o: ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_rtc_ex.h
 smart house\liquidcrystal.o: ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_spi.h
 smart house\liquidcrystal.o: ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_spi_ex.h
 smart house\liquidcrystal.o: ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_tim.h

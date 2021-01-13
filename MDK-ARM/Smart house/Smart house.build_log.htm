@@ -22,38 +22,70 @@ Dialog DLL:      TCM.DLL V1.46.0.0
  
 <h2>Project:</h2>
 E:\uni\7\mp az\projects\Smart house\MDK-ARM\Smart house.uvprojx
-Project File Date:  01/11/2021
+Project File Date:  01/14/2021
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'D:\Program Files\Keil_v5\ARM\ARMCC\Bin'
 Build target 'Smart house'
 compiling stm32f3xx_it.c...
-../Src/stm32f3xx_it.c(46): warning:  #188-D: enumerated type mixed with another type
-  	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_8, set);
-../Src/stm32f3xx_it.c(47): warning:  #188-D: enumerated type mixed with another type
-  	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_9, set);
-../Src/stm32f3xx_it.c(48): warning:  #188-D: enumerated type mixed with another type
-  	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_10, set);
-../Src/stm32f3xx_it.c(49): warning:  #188-D: enumerated type mixed with another type
-  	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_11, set);
-../Src/stm32f3xx_it.c(151): warning:  #188-D: enumerated type mixed with another type
+../Src/stm32f3xx_it.c(117): warning:  #188-D: enumerated type mixed with another type
+  	HAL_GPIO_WritePin(GPIOC,GPIO_PIN_0,x1 > 0);
+../Src/stm32f3xx_it.c(118): warning:  #188-D: enumerated type mixed with another type
+  	HAL_GPIO_WritePin(GPIOC,GPIO_PIN_1,x2 > 0);
+../Src/stm32f3xx_it.c(119): warning:  #188-D: enumerated type mixed with another type
+  	HAL_GPIO_WritePin(GPIOC,GPIO_PIN_2,x3 > 0);
+../Src/stm32f3xx_it.c(120): warning:  #188-D: enumerated type mixed with another type
+  	HAL_GPIO_WritePin(GPIOC,GPIO_PIN_3,x4 > 0);
+../Src/stm32f3xx_it.c(124): warning:  #188-D: enumerated type mixed with another type
+  	HAL_GPIO_WritePin(GPIOF,GPIO_PIN_9| GPIO_PIN_10,1);
+../Src/stm32f3xx_it.c(125): warning:  #188-D: enumerated type mixed with another type
+  	HAL_GPIO_WritePin(GPIOC,GPIO_PIN_13,1);
+../Src/stm32f3xx_it.c(126): warning:  #188-D: enumerated type mixed with another type
+  	HAL_GPIO_WritePin(GPIOE,GPIO_PIN_6,1);
+../Src/stm32f3xx_it.c(127): warning:  #188-D: enumerated type mixed with another type
+  	HAL_GPIO_WritePin(GPIOB,GPIO_PIN_2,0);
+../Src/stm32f3xx_it.c(134): warning:  #167-D: argument of type "unsigned char *" is incompatible with parameter of type "char *restrict"
+  	int n=sprintf(data,"%d\r", number);
+../Src/stm32f3xx_it.c(193): warning:  #186-D: pointless comparison of unsigned integer with zero
+  		if(isAlarmActive && myTime.Hours >=0 && myTime.Hours <7)
+../Src/stm32f3xx_it.c(214): warning:  #188-D: enumerated type mixed with another type
+  			HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, 0);
+../Src/stm32f3xx_it.c(219): warning:  #188-D: enumerated type mixed with another type
+  			HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, 0);
+../Src/stm32f3xx_it.c(221): warning:  #188-D: enumerated type mixed with another type
+  			HAL_GPIO_WritePin(GPIOB,GPIO_PIN_2,1);
+../Src/stm32f3xx_it.c(225): warning:  #188-D: enumerated type mixed with another type
+  			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, 0);
+../Src/stm32f3xx_it.c(230): warning:  #188-D: enumerated type mixed with another type
+  			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_6, 0);
+../Src/stm32f3xx_it.c(305): warning:  #188-D: enumerated type mixed with another type
+  		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, 1);
+../Src/stm32f3xx_it.c(312): warning:  #188-D: enumerated type mixed with another type
+  		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, 0);
+../Src/stm32f3xx_it.c(388): warning:  #186-D: pointless comparison of unsigned integer with zero
+  				if(myTime.Hours >= 0 && myTime.Hours < 7){
+../Src/stm32f3xx_it.c(417): warning:  #188-D: enumerated type mixed with another type
+  				HAL_GPIO_WritePin(GPIOD, GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11, 0);
+../Src/stm32f3xx_it.c(418): warning:  #188-D: enumerated type mixed with another type
   				HAL_GPIO_WritePin(GPIOD, GPIO_PIN_8, 1);
-../Src/stm32f3xx_it.c(154): warning:  #188-D: enumerated type mixed with another type
+../Src/stm32f3xx_it.c(421): warning:  #188-D: enumerated type mixed with another type
   				HAL_GPIO_WritePin(GPIOD, GPIO_PIN_8, 0);
-../Src/stm32f3xx_it.c(156): warning:  #188-D: enumerated type mixed with another type
+../Src/stm32f3xx_it.c(423): warning:  #188-D: enumerated type mixed with another type
   				HAL_GPIO_WritePin(GPIOD, GPIO_PIN_9, 1);
-../Src/stm32f3xx_it.c(159): warning:  #188-D: enumerated type mixed with another type
+../Src/stm32f3xx_it.c(426): warning:  #188-D: enumerated type mixed with another type
   				HAL_GPIO_WritePin(GPIOD, GPIO_PIN_9, 0);
-../Src/stm32f3xx_it.c(161): warning:  #188-D: enumerated type mixed with another type
+../Src/stm32f3xx_it.c(428): warning:  #188-D: enumerated type mixed with another type
   				HAL_GPIO_WritePin(GPIOD, GPIO_PIN_10, 1);
-../Src/stm32f3xx_it.c(164): warning:  #188-D: enumerated type mixed with another type
+../Src/stm32f3xx_it.c(431): warning:  #188-D: enumerated type mixed with another type
   				HAL_GPIO_WritePin(GPIOD, GPIO_PIN_10, 0);
-../Src/stm32f3xx_it.c(166): warning:  #188-D: enumerated type mixed with another type
+../Src/stm32f3xx_it.c(433): warning:  #188-D: enumerated type mixed with another type
   				HAL_GPIO_WritePin(GPIOD, GPIO_PIN_11, 1);
-../Src/stm32f3xx_it.c: 11 warnings, 0 errors
+../Src/stm32f3xx_it.c(450): warning:  #188-D: enumerated type mixed with another type
+  				HAL_GPIO_WritePin(GPIOD, GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11, 1);
+../Src/stm32f3xx_it.c: 27 warnings, 0 errors
 linking...
-Program Size: Code=14272 RO-data=488 RW-data=48 ZI-data=2584  
-"Smart house\Smart house.axf" - 0 Error(s), 11 Warning(s).
+Program Size: Code=21788 RO-data=488 RW-data=76 ZI-data=2956  
+"Smart house\Smart house.axf" - 0 Error(s), 27 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -76,7 +108,7 @@ Package Vendor: Keil
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.4.0
-Build Time Elapsed:  00:00:02
+Build Time Elapsed:  00:00:01
 </pre>
 </body>
 </html>
