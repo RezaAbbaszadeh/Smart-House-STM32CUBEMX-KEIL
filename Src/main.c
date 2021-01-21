@@ -59,6 +59,7 @@ SPI_HandleTypeDef hspi1;
 TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim3;
 TIM_HandleTypeDef htim4;
+TIM_HandleTypeDef htim8;
 TIM_HandleTypeDef htim15;
 TIM_HandleTypeDef htim16;
 
@@ -91,6 +92,9 @@ struct Room rooms[4];
 
 RTC_TimeTypeDef myTime;
 RTC_DateTypeDef myDate;
+
+
+char uartChar;
 
 typedef unsigned char byte;
 void createChars(){
@@ -201,6 +205,7 @@ static void MX_TIM4_Init(void);
 static void MX_TIM15_Init(void);
 static void MX_TIM16_Init(void);
 static void MX_USART3_UART_Init(void);
+static void MX_TIM8_Init(void);
 
 void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
                                 
@@ -256,20 +261,23 @@ int main(void)
   MX_TIM15_Init();
   MX_TIM16_Init();
   MX_USART3_UART_Init();
+  MX_TIM8_Init();
   /* USER CODE BEGIN 2 */
 	
 	// Menu
 	LiquidCrystal(GPIOD, GPIO_PIN_6, GPIO_PIN_5, GPIO_PIN_4, GPIO_PIN_3, GPIO_PIN_2, GPIO_PIN_1, GPIO_PIN_0);
 	begin(20, 4);
 	createChars();
-//	setCursor(7,0);
-//	print("Status");
-//	setCursor(6,1);
-//	print("Activate");
-//	setCursor(3,2);
-//	print("Change password");
-//	setCursor(6,3);
-//	print("About us");
+	setCursor(7,0);
+	print("Status");
+	setCursor(6,1);
+	print("Activate");
+	setCursor(3,2);
+	print("Change password");
+	setCursor(6,3);
+	print("About us");
+
+	HAL_UART_Receive_IT(&huart3, &uartChar, sizeof(uartChar));
 
 	rooms[0] = createRoom(TIM_CHANNEL_3 , GPIOB, GPIO_PIN_10);
 	rooms[1] = createRoom(TIM_CHANNEL_2 , GPIOB, GPIO_PIN_11);
@@ -291,21 +299,22 @@ int main(void)
 	
 	// RTC
 	myTime.Hours = 23;
-	myTime.Minutes = 45;
+	myTime.Minutes = 55;
 	myTime.Seconds = 00;
 	
 	myDate.Year = 21;
 	myDate.Month = 1;
 	myDate.Date = 12;
 	
-	HAL_RTC_SetTime(&hrtc, &myTime, RTC_FORMAT_BIN);
 	HAL_RTC_SetDate(&hrtc, &myDate, RTC_FORMAT_BIN);
+	HAL_RTC_SetTime(&hrtc, &myTime, RTC_FORMAT_BIN);
 	
 	// Timers
 	HAL_TIM_Base_Start_IT(&htim2);
 	HAL_TIM_Base_Start_IT(&htim4);
 	HAL_TIM_Base_Start_IT(&htim15);
 	HAL_TIM_Base_Start_IT(&htim16);
+	HAL_TIM_Base_Start_IT(&htim8);
 	
 	// ADCs
 	HAL_ADC_Start_IT(&hadc1);
@@ -407,13 +416,15 @@ void SystemClock_Config(void)
 
   PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USB|RCC_PERIPHCLK_USART3
                               |RCC_PERIPHCLK_I2C1|RCC_PERIPHCLK_RTC
-                              |RCC_PERIPHCLK_ADC12|RCC_PERIPHCLK_ADC34;
+                              |RCC_PERIPHCLK_TIM8|RCC_PERIPHCLK_ADC12
+                              |RCC_PERIPHCLK_ADC34;
   PeriphClkInit.Usart3ClockSelection = RCC_USART3CLKSOURCE_PCLK1;
   PeriphClkInit.Adc12ClockSelection = RCC_ADC12PLLCLK_DIV1;
   PeriphClkInit.Adc34ClockSelection = RCC_ADC34PLLCLK_DIV1;
   PeriphClkInit.I2c1ClockSelection = RCC_I2C1CLKSOURCE_HSI;
   PeriphClkInit.RTCClockSelection = RCC_RTCCLKSOURCE_LSI;
   PeriphClkInit.USBClockSelection = RCC_USBCLKSOURCE_PLL_DIV1_5;
+  PeriphClkInit.Tim8ClockSelection = RCC_TIM8CLK_HCLK;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
   {
     _Error_Handler(__FILE__, __LINE__);
@@ -800,6 +811,41 @@ static void MX_TIM4_Init(void)
   sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
   sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
   if (HAL_TIMEx_MasterConfigSynchronization(&htim4, &sMasterConfig) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+}
+
+/* TIM8 init function */
+static void MX_TIM8_Init(void)
+{
+
+  TIM_ClockConfigTypeDef sClockSourceConfig;
+  TIM_MasterConfigTypeDef sMasterConfig;
+
+  htim8.Instance = TIM8;
+  htim8.Init.Prescaler = 6900;
+  htim8.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim8.Init.Period = 10000;
+  htim8.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim8.Init.RepetitionCounter = 0;
+  htim8.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim8) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim8, &sClockSourceConfig) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterOutputTrigger2 = TIM_TRGO2_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim8, &sMasterConfig) != HAL_OK)
   {
     _Error_Handler(__FILE__, __LINE__);
   }

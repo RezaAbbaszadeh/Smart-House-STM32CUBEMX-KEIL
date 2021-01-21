@@ -41,4 +41,5 @@ smart house\stm32f3xx_it.o: ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_ua
 smart house\stm32f3xx_it.o: ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_uart_ex.h
 smart house\stm32f3xx_it.o: ../Inc/stm32f3xx_it.h
 smart house\stm32f3xx_it.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+smart house\stm32f3xx_it.o: D:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 smart house\stm32f3xx_it.o: ../Inc/LiquidCrystal.h

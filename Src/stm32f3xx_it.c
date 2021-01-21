@@ -37,16 +37,17 @@
 
 /* USER CODE BEGIN 0 */
 #include <stdbool.h>
+#include <string.h>
 #include "LiquidCrystal.h"
 #define MAX(a,b) ((a) > (b) ? (a) : (b))
 const int FADE_INTERVAL = 10;
 int lastTickKeypad = 0;
 char pushedButton = 0;
 
-enum Menu {MAIN, STATUS, ACTIVATE, PASSWORD, ABOUT};
-enum Menu menu = STATUS;
+enum Menu {MAIN, STATUS, ACTIVATE, PASSWORD, NEW_PASSWORD, ABOUT};
+enum Menu menu = MAIN;
 
-int temp = 0;
+int temp = 0 , light = 0, scaledLight = 0;
 float scaledTemp = 0;
 int volume = 0;
 float scaledVolume = 0;
@@ -55,6 +56,11 @@ int mixedTempVolume = 0, index7seg = 0;
 
 bool isAlarmActive = true;
 bool isAlarmRinging = false;
+
+char password[6] = "11111";
+char newPassword[6] = {0};
+int keyIndex = 0, passIndex = 0;
+char key = 0;
 
 
 struct Room{
@@ -66,45 +72,99 @@ struct Room{
 };
 
 extern struct Room rooms[4];
-
 extern RTC_TimeTypeDef myTime;
 extern RTC_DateTypeDef myDate;
-
 extern ADC_HandleTypeDef hadc1,hadc2,hadc4;
 extern RTC_HandleTypeDef hrtc;
+extern UART_HandleTypeDef huart3;
+extern char uartChar;
+char uart[50];
 
 void navigateToStatus(){
-	menu = STATUS;
-	clear();
+	if(menu==MAIN){
+		menu = STATUS;
+		clear();
+	}
+}
+
+void sendUsart(char* message){
+	unsigned char log[100]="";
+	int n = sprintf(log, "%02d/%02d/20%02d %02d:%02d:%02d %s\n",
+		myDate.Date, myDate.Month, myDate.Year, myTime.Hours, myTime.Minutes, myTime.Seconds, message);
+	HAL_UART_Transmit(&huart3,log,n,1000);	
+}
+
+void setAlarmState(bool ring){
+	if(ring && isAlarmActive){
+		isAlarmRinging = true;
+		sendUsart("hello");
+	}
+	else{
+		isAlarmRinging = false;
+	}
 }
 
 void navigateToMainMenu(){
-	menu = MAIN;
-	clear();
-	setCursor(7,0);
-	print("Status");
-	setCursor(5,1);
-	if(isAlarmActive)
-		print("Deactivate");
-	else
-		print("Activate");
-	setCursor(3,2);
-	print("Change password");
-	setCursor(6,3);
-	print("About us");
+	if(menu!=MAIN){
+		menu = MAIN;
+		clear();
+		setCursor(7,0);
+		print("Status");
+		setCursor(5,1);
+		if(isAlarmActive)
+			print("Deactivate");
+		else
+			print("Activate");
+		setCursor(3,2);
+		print("Change password");
+		setCursor(6,3);
+		print("About us");
+	}
 }
 
 void navigateToAboutUs(){
-	menu = ABOUT;
+	if(menu==MAIN){
+		menu = ABOUT;
+		clear();
+		setCursor(10, 0);
+		write(6);
+		write(5);
+		write(4);
+		write(3);
+		write(2);
+		write(1);
+		write(0);
+	}
+}
+
+void resetPasswordVars(){
+	keyIndex=0;
+		passIndex=0;
+		for(int i=0; i<6; i++){
+			newPassword[i] = 0;
+		}
+}
+
+void navigateToPass(){
+	menu = PASSWORD;
 	clear();
-	setCursor(10, 0);
-  write(6);
-  write(5);
-  write(4);
-  write(3);
-  write(2);
-	write(1);
-	write(0);
+	resetPasswordVars();
+	setCursor(0,0);
+	print("enter your password:");
+	setCursor(7,2);
+	blink();
+}
+
+void navigateToNewPass(){
+	if(menu==PASSWORD){
+		menu = NEW_PASSWORD;
+		clear();
+		resetPasswordVars();
+		setCursor(0,0);
+		print("enter NEW password:");
+		setCursor(7,2);
+		blink();
+	}
 }
 
 
@@ -128,12 +188,6 @@ void turnOff7seg(){
 	
 }
 
-extern UART_HandleTypeDef huart3;
-void sendUsart(int number){
-	unsigned char data[2]="";
-	int n=sprintf(data,"%d\r", number);
-	HAL_UART_Transmit(&huart3,data,n,1000);	
-}
 
 /* USER CODE END 0 */
 
@@ -141,6 +195,7 @@ void sendUsart(int number){
 extern TIM_HandleTypeDef htim2;
 extern TIM_HandleTypeDef htim3;
 extern TIM_HandleTypeDef htim4;
+extern TIM_HandleTypeDef htim8;
 extern TIM_HandleTypeDef htim15;
 extern TIM_HandleTypeDef htim16;
 extern UART_HandleTypeDef huart3;
@@ -190,8 +245,8 @@ void EXTI9_5_IRQHandler(void)
 	}
 	
 	if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_9)==1){
-		if(isAlarmActive && myTime.Hours >=0 && myTime.Hours <7)
-			isAlarmRinging = true;
+		if(myTime.Hours >=0 && myTime.Hours <7)
+			setAlarmState(true);
 	}
   /* USER CODE END EXTI9_5_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_7);
@@ -251,6 +306,26 @@ void TIM1_UP_TIM16_IRQHandler(void)
 	if(isAlarmRinging){
 		HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15);
 	}
+	
+	
+	temp = HAL_ADC_GetValue(&hadc1);
+	scaledTemp = (float)temp*3300/4095/10;
+	volume = HAL_ADC_GetValue(&hadc2);
+	scaledVolume = MAX(0,(float)(volume-1150)/2800 * 60);
+	mixedTempVolume = (int)scaledTemp*100 + scaledVolume;
+	if(scaledTemp > scaledVolume){
+		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, 1);
+		if(scaledTemp > scaledVolume + 10)
+			setAlarmState(true);
+	}
+	else{
+		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, 0);
+		setAlarmState(false);
+	}
+	
+	HAL_ADC_Start_IT(&hadc2);
+	HAL_ADC_Start_IT(&hadc1);
+	
 
   /* USER CODE END TIM1_UP_TIM16_IRQn 0 */
   HAL_TIM_IRQHandler(&htim16);
@@ -267,17 +342,11 @@ void TIM2_IRQHandler(void)
   /* USER CODE BEGIN TIM2_IRQn 0 */
 
 	
-	temp = HAL_ADC_GetValue(&hadc1);
-	scaledTemp = (float)temp*3300/4095/10;
-	volume = HAL_ADC_GetValue(&hadc2);
-	scaledVolume = MAX(0,(float)(volume-1150)/2800 * 60);
-	mixedTempVolume = (int)scaledTemp*100 + scaledVolume;
-	int light = HAL_ADC_GetValue(&hadc4);
-	int scaledLight = (light - 980)*100/1100;
+	
+	light = HAL_ADC_GetValue(&hadc4);
+	scaledLight = (light - 980)*100/1100;
 	HAL_RTC_GetTime(&hrtc, &myTime, RTC_FORMAT_BIN);
 	HAL_RTC_GetDate(&hrtc, &myDate, RTC_FORMAT_BIN);
-	HAL_ADC_Start_IT(&hadc2);
-	HAL_ADC_Start_IT(&hadc1);
 	HAL_ADC_Start_IT(&hadc4);
 	
 	if(menu==STATUS){
@@ -293,23 +362,6 @@ void TIM2_IRQHandler(void)
 		print(str);
 		
 	}
-	
-	if(scaledLight < 50 && myTime.Hours >= 17 && myTime.Hours < 24){
-		rooms[2].isOn = true;
-	}		
-	
-	if(myTime.Hours >= 7 && rooms[0].isOn)
-		rooms[0].isOn = false;
-	
-	if(scaledTemp > scaledVolume){
-		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, 1);
-		if(scaledTemp > scaledVolume + 10)
-			isAlarmRinging = true;
-		else
-			isAlarmRinging = false;
-	}
-	else
-		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, 0);
 	
 
   /* USER CODE END TIM2_IRQn 0 */
@@ -350,6 +402,7 @@ void TIM4_IRQHandler(void)
 			__HAL_TIM_SET_COMPARE(&htim3, rooms[i].channel, rooms[i].fade);
 		}
 	}
+
 	
   /* USER CODE END TIM4_IRQn 0 */
   HAL_TIM_IRQHandler(&htim4);
@@ -364,11 +417,46 @@ void TIM4_IRQHandler(void)
 void USART3_IRQHandler(void)
 {
   /* USER CODE BEGIN USART3_IRQn 0 */
-
+	
   /* USER CODE END USART3_IRQn 0 */
   HAL_UART_IRQHandler(&huart3);
   /* USER CODE BEGIN USART3_IRQn 1 */
 
+	if(uartChar == 0x0A){
+		if(!strcasecmp(uart, "A"))
+			navigateToMainMenu();
+		else if(!strcasecmp(strtok(uart, " "), "SetDateTime")){
+			char dayStr[3],monthStr[3], yearStr[3], hourStr[3], minStr[3];
+			strncpy(dayStr, uart + 12, 2);
+			strncpy(monthStr, uart + 15, 2);
+			strncpy(yearStr, uart + 20, 4);
+			strncpy(hourStr, uart + 23, 2);
+			strncpy(minStr, uart + 26, 2);
+			dayStr[2] = monthStr[2] = yearStr[2] = hourStr[2] = minStr[2] = 0;
+			
+			RTC_TimeTypeDef localTime;
+			RTC_DateTypeDef localDate;
+			localTime.Hours = atoi(hourStr);
+			localTime.Minutes = atoi(minStr);
+			localTime.Seconds = 0;
+		
+			localDate.Year = atoi(yearStr);
+			localDate.Month = atoi(monthStr);
+			localDate.Date = atoi(dayStr);
+			
+			HAL_RTC_SetTime(&hrtc, &localTime, RTC_FORMAT_BIN);
+			HAL_RTC_SetDate(&hrtc, &localDate, RTC_FORMAT_BIN);
+		}
+		
+		for(int i =0 ;i<50 ;i++)
+			uart[i] = 0;
+	}
+	else{
+		strncat(uart, &uartChar, 1);
+	}
+		
+
+	HAL_UART_Receive_IT(&huart3, &uartChar, sizeof(uartChar));
   /* USER CODE END USART3_IRQn 1 */
 }
 
@@ -402,13 +490,25 @@ void EXTI15_10_IRQHandler(void)
 			
 		
 		uint16_t readPins[4] = {GPIO_PIN_12, GPIO_PIN_13, GPIO_PIN_14, GPIO_PIN_15};
-		char keys[16] = {
-			'1', '2', '3', 'A', 
-			'4', '5', '6', 'B', 
-			'7', '8', '9', 'C', 
-			'*', '0', '#', 'D', 
+		char keys[16][5] = {
+			{'1',0,0,0,0},
+			{'2','a','b','c',0},
+			{'3','d','e','f',0},
+			{'A',0,0,0,0},
+			{'4','g','h','i',0},
+			{'5','j','k','l',0},
+			{'6','m','n','o',0},
+			{'B', 0,0,0,0},
+			{'7','p','q','r','s'},
+			{'8','t','u','v',0},
+			{'9','w','x','y','z'},
+			{'C',0,0,0,0}, 
+			{'*','+',0,0,0},
+			{'0',0,0,0,0},
+			{'#',0,0,0,0},
+			{'D',0,0,0,0}
 		};
-		
+		int rowIndex = -1;
 		for(int i = 0; i<4 ; i++){
 			if(HAL_GPIO_ReadPin(GPIOD, readPins[i])){
 				pushedButton = 0;
@@ -417,35 +517,81 @@ void EXTI15_10_IRQHandler(void)
 				HAL_GPIO_WritePin(GPIOD, GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11, 0);
 				HAL_GPIO_WritePin(GPIOD, GPIO_PIN_8, 1);
 				if(HAL_GPIO_ReadPin(GPIOD, readPins[i]))
-					pushedButton = keys[i];
+					rowIndex = i;
 				HAL_GPIO_WritePin(GPIOD, GPIO_PIN_8, 0);
 				
 				HAL_GPIO_WritePin(GPIOD, GPIO_PIN_9, 1);
 				if(HAL_GPIO_ReadPin(GPIOD, readPins[i]))
-					pushedButton = keys[4+i];
+					rowIndex = 4+i;
 				HAL_GPIO_WritePin(GPIOD, GPIO_PIN_9, 0);
 				
 				HAL_GPIO_WritePin(GPIOD, GPIO_PIN_10, 1);
 				if(HAL_GPIO_ReadPin(GPIOD, readPins[i]))
-					pushedButton = keys[8+i];
+					rowIndex = 8+i;
 				HAL_GPIO_WritePin(GPIOD, GPIO_PIN_10, 0);
 				
 				HAL_GPIO_WritePin(GPIOD, GPIO_PIN_11, 1);
 				if(HAL_GPIO_ReadPin(GPIOD, readPins[i]))
-					pushedButton = keys[12+i];
+					rowIndex = 12+i;
 			
-				if(pushedButton!=0){
+				if(rowIndex!=-1){
+					pushedButton = keys[rowIndex][0];
 //					setCursor(0,1);
 //					print(&pushedButton);
-					if(pushedButton=='1' && menu==MAIN){
-						navigateToStatus();
-					}
-					else if(pushedButton=='A' && menu!=MAIN){
+					if(pushedButton=='A'){
+						if(menu == PASSWORD || menu==NEW_PASSWORD)
+							resetPasswordVars();
 						navigateToMainMenu();
 					}
-					else if(pushedButton=='4' && menu==MAIN){
-						navigateToAboutUs();
+					if(menu==MAIN){
+						if(pushedButton=='1'){
+							navigateToStatus();
+						}
+						else if(pushedButton=='4'){
+							navigateToAboutUs();
+						}
+						else if(pushedButton=='3'){
+							navigateToPass();
+						}
 					}
+					else if(menu == PASSWORD || menu == NEW_PASSWORD){
+						if(rowIndex == 7){
+							if(key!=0){
+								newPassword[passIndex] = key;
+								passIndex+=1;
+								keyIndex=0;
+								key=0;
+								setCursor(7+passIndex+1, 2);
+								
+								if(passIndex==5){
+									newPassword[5] = 0;
+									if(menu==PASSWORD){
+										if(!strcmp(password, newPassword)){
+											navigateToNewPass();
+										}
+										else{
+											navigateToPass();
+										}
+									}
+									else{
+										for(int i=0;i<6;i++){
+											password[i] = newPassword[i];
+										}
+										navigateToMainMenu();
+									}
+								}
+							}
+						}
+						else{
+							key = keys[rowIndex][keyIndex];
+							keyIndex=(keyIndex+1)%5;
+							setCursor(7+passIndex, 2);
+							print(&key);
+						}
+						
+						
+					}
+					
 				}
 				HAL_GPIO_WritePin(GPIOD, GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11, 1);
 				break;
@@ -463,6 +609,26 @@ void EXTI15_10_IRQHandler(void)
   /* USER CODE BEGIN EXTI15_10_IRQn 1 */
 
   /* USER CODE END EXTI15_10_IRQn 1 */
+}
+
+/**
+* @brief This function handles TIM8 update interrupt.
+*/
+void TIM8_UP_IRQHandler(void)
+{
+  /* USER CODE BEGIN TIM8_UP_IRQn 0 */
+	if(myTime.Hours >= 17 && myTime.Hours < 24 && scaledLight < 50){
+		rooms[2].isOn = true;
+	}		
+	
+	if(myTime.Hours == 7 && rooms[0].isOn)
+		rooms[0].isOn = false;
+	
+  /* USER CODE END TIM8_UP_IRQn 0 */
+  HAL_TIM_IRQHandler(&htim8);
+  /* USER CODE BEGIN TIM8_UP_IRQn 1 */
+
+  /* USER CODE END TIM8_UP_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */
