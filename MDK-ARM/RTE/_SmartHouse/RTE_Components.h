@@ -3,8 +3,8 @@
  * Auto generated Run-Time-Environment Configuration File
  *      *** Do not modify ! ***
  *
- * Project: 'Smart house' 
- * Target:  'Smart house' 
+ * Project: 'SmartHouse' 
+ * Target:  'SmartHouse' 
  */
 
 #ifndef RTE_COMPONENTS_H

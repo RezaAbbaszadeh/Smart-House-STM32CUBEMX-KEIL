@@ -825,7 +825,7 @@ static void MX_TIM8_Init(void)
   TIM_MasterConfigTypeDef sMasterConfig;
 
   htim8.Instance = TIM8;
-  htim8.Init.Prescaler = 6900;
+  htim8.Init.Prescaler = 24;
   htim8.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim8.Init.Period = 10000;
   htim8.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;

@@ -641,12 +641,12 @@ ARM Macro Assembler    Page 10
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --apcs=
 interwork --depend="smart house\startup_stm32f303xc.d" -o"smart house\startup_s
-tm32f303xc.o" -I.\RTE\_Smart_house -IC:\Users\User\AppData\Local\Arm\Packs\ARM\
-CMSIS\5.7.0\CMSIS\Core\Include -IC:\Users\User\AppData\Local\Arm\Packs\Keil\STM
-32F3xx_DFP\2.1.0\Drivers\CMSIS\Device\ST\STM32F3xx\Include --predefine="__MICRO
-LIB SETA 1" --predefine="__UVISION_VERSION SETA 531" --predefine="_RTE_ SETA 1"
- --predefine="STM32F303xC SETA 1" --predefine="_RTE_ SETA 1" --list=startup_stm
-32f303xc.lst startup_stm32f303xc.s
+tm32f303xc.o" -I.\RTE\_SmartHouse -IC:\Users\User\AppData\Local\Arm\Packs\ARM\C
+MSIS\5.7.0\CMSIS\Core\Include -IC:\Users\User\AppData\Local\Arm\Packs\Keil\STM3
+2F3xx_DFP\2.1.0\Drivers\CMSIS\Device\ST\STM32F3xx\Include --predefine="__MICROL
+IB SETA 1" --predefine="__UVISION_VERSION SETA 531" --predefine="_RTE_ SETA 1" 
+--predefine="STM32F303xC SETA 1" --predefine="_RTE_ SETA 1" --list=startup_stm3
+2f303xc.lst startup_stm32f303xc.s
 
 
 

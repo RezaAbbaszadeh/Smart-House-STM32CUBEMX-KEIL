@@ -577,6 +577,7 @@ void EXTI15_10_IRQHandler(void)
 										for(int i=0;i<6;i++){
 											password[i] = newPassword[i];
 										}
+										noBlink();
 										navigateToMainMenu();
 									}
 								}
