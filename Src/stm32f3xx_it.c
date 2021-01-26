@@ -40,11 +40,11 @@
 #include <string.h>
 #include "LiquidCrystal.h"
 #define MAX(a,b) ((a) > (b) ? (a) : (b))
-const int FADE_INTERVAL = 10;
+const int FADE_INTERVAL = 10 , LIGHT_ON = 8, LIGHT_OFF = 7, MOVE_DETECTED = 1, HIGH_TEMP = 2;
 int lastTickKeypad = 0;
 char pushedButton = 0;
 
-enum Menu {MAIN, STATUS, ACTIVATE, PASSWORD, NEW_PASSWORD, ABOUT};
+enum Menu {MAIN, STATUS, DEACTIVE, ACTIVATED, PASSWORD, NEW_PASSWORD, PASS_CHANGED, ABOUT};
 enum Menu menu = MAIN;
 
 int temp = 0 , light = 0, scaledLight = 0;
@@ -55,12 +55,14 @@ int mixedTempVolume = 0, index7seg = 0;
 
 
 bool isAlarmActive = true;
-bool isAlarmRinging = false;
+int isAlarmRinging = 0;
 
 char password[6] = "11111";
 char newPassword[6] = {0};
-int keyIndex = 0, passIndex = 0;
+int keyIndex = 0, passIndex = 0, rowIndex = -1;
 char key = 0;
+
+int parkingTimer = -1;
 
 
 struct Room{
@@ -94,33 +96,39 @@ void sendUsart(char* message){
 	HAL_UART_Transmit(&huart3,log,n,1000);	
 }
 
-void setAlarmState(bool ring){
-	if(ring && isAlarmActive){
-		isAlarmRinging = true;
+void setAlarmState(int ringReason){
+	if(ringReason && isAlarmActive){
+		isAlarmRinging = ringReason;
 		sendUsart("hello");
 	}
 	else{
-		isAlarmRinging = false;
+		isAlarmRinging = 0;
+		HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15, 0);
 	}
 }
 
 void navigateToMainMenu(){
 	if(menu!=MAIN){
 		menu = MAIN;
+		noBlink();
 		clear();
 		setCursor(7,0);
 		print("Status");
-		setCursor(5,1);
-		if(isAlarmActive)
+		if(isAlarmActive){
+			setCursor(5,1);
 			print("Deactivate");
-		else
+		}
+		else{	
+			setCursor(6,1);
 			print("Activate");
+		}
 		setCursor(3,2);
 		print("Change password");
 		setCursor(6,3);
 		print("About us");
 	}
 }
+
 
 void navigateToAboutUs(){
 	if(menu==MAIN){
@@ -137,6 +145,7 @@ void navigateToAboutUs(){
 	}
 }
 
+
 void resetPasswordVars(){
 	keyIndex=0;
 		passIndex=0;
@@ -145,12 +154,15 @@ void resetPasswordVars(){
 		}
 }
 
-void navigateToPass(){
+void navigateToPass(bool isFirstTry){
 	menu = PASSWORD;
 	clear();
 	resetPasswordVars();
 	setCursor(0,0);
-	print("enter your password:");
+	if(isFirstTry)
+		print("Enter your password:");
+	else
+		print("Wrong! Try again:");
 	setCursor(7,2);
 	blink();
 }
@@ -165,6 +177,36 @@ void navigateToNewPass(){
 		setCursor(7,2);
 		blink();
 	}
+}
+
+
+void navigateToPassChanged(){
+	menu = PASS_CHANGED;
+	clear();
+	setCursor(2,4);
+	print("password changed");
+}
+
+
+void navigateToDeactive(bool isFirstTry){
+	menu = DEACTIVE;
+	clear();
+	resetPasswordVars();
+	setCursor(0,0);
+	if(isFirstTry)
+		print("Enter your password:");
+	else
+		print("Wrong! Try again:");
+	setCursor(7,2);
+	blink();
+}
+
+void navigateToAlarmActivated(){
+	menu = ACTIVATED;
+	isAlarmActive = true;
+	clear();
+	setCursor(0,1);
+	print("Alarm is active now");
 }
 
 
@@ -233,6 +275,8 @@ void EXTI9_5_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI9_5_IRQn 0 */
 
+	
+	// room 3 and 4
 	if(HAL_GetTick() - lastTickKeypad > 300){
 		lastTickKeypad = HAL_GetTick();
 		
@@ -244,9 +288,14 @@ void EXTI9_5_IRQHandler(void)
 		}
 	}
 	
+	// PIR sensor
 	if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_9)==1){
 		if(myTime.Hours >=0 && myTime.Hours <7)
-			setAlarmState(true);
+			setAlarmState(MOVE_DETECTED);
+		else if(!rooms[3].isOn){
+			parkingTimer = 24 * 60;
+			rooms[3].isOn = true;
+		}
 	}
   /* USER CODE END EXTI9_5_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_7);
@@ -314,13 +363,16 @@ void TIM1_UP_TIM16_IRQHandler(void)
 	scaledVolume = MAX(0,(float)(volume-1150)/2800 * 60);
 	mixedTempVolume = (int)scaledTemp*100 + scaledVolume;
 	if(scaledTemp > scaledVolume){
-		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, 1);
+		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, 1); // relay cooling system
 		if(scaledTemp > scaledVolume + 10)
-			setAlarmState(true);
+			setAlarmState(HIGH_TEMP);
+		else if(isAlarmRinging == HIGH_TEMP)
+			setAlarmState(0);
 	}
 	else{
-		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, 0);
-		setAlarmState(false);
+		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, 0); // relay cooling system
+		if(isAlarmRinging == HIGH_TEMP)
+			setAlarmState(0);
 	}
 	
 	HAL_ADC_Start_IT(&hadc2);
@@ -360,6 +412,18 @@ void TIM2_IRQHandler(void)
 		setCursor(0,2);
 		sprintf(str, "%.2f%cC   light:%d", scaledTemp, 0xDF, scaledLight);
 		print(str);
+		
+		// rooms
+		setCursor(0,3);
+		print("Rooms:");
+		for(int i=0 ; i<4; i++){
+			setCursor(11 + i*2,3);
+			if(rooms[i].isOn)
+				write(LIGHT_ON);
+			else
+				write(LIGHT_OFF);
+		}
+		
 		
 	}
 	
@@ -470,7 +534,7 @@ void EXTI15_10_IRQHandler(void)
 	if(HAL_GetTick() - lastTickKeypad > 300){
 		lastTickKeypad = HAL_GetTick();
 		
-		
+		// room 2
 		if(HAL_GPIO_ReadPin(rooms[1].buttonTypeDef, rooms[1].buttonPin)){
 				rooms[1].isOn = !rooms[1].isOn;
 				if(myTime.Hours >= 0 && myTime.Hours < 7){
@@ -483,6 +547,7 @@ void EXTI15_10_IRQHandler(void)
 				}
 				return;
 		}
+		// room 1
 		else if(HAL_GPIO_ReadPin(rooms[0].buttonTypeDef, rooms[0].buttonPin)){
 			rooms[0].isOn = !rooms[0].isOn;
 				return;
@@ -508,7 +573,7 @@ void EXTI15_10_IRQHandler(void)
 			{'#',0,0,0,0},
 			{'D',0,0,0,0}
 		};
-		int rowIndex = -1;
+		int pushedRowIndex = -1;
 		for(int i = 0; i<4 ; i++){
 			if(HAL_GPIO_ReadPin(GPIOD, readPins[i])){
 				pushedButton = 0;
@@ -517,25 +582,25 @@ void EXTI15_10_IRQHandler(void)
 				HAL_GPIO_WritePin(GPIOD, GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11, 0);
 				HAL_GPIO_WritePin(GPIOD, GPIO_PIN_8, 1);
 				if(HAL_GPIO_ReadPin(GPIOD, readPins[i]))
-					rowIndex = i;
+					pushedRowIndex = i;
 				HAL_GPIO_WritePin(GPIOD, GPIO_PIN_8, 0);
 				
 				HAL_GPIO_WritePin(GPIOD, GPIO_PIN_9, 1);
 				if(HAL_GPIO_ReadPin(GPIOD, readPins[i]))
-					rowIndex = 4+i;
+					pushedRowIndex = 4+i;
 				HAL_GPIO_WritePin(GPIOD, GPIO_PIN_9, 0);
 				
 				HAL_GPIO_WritePin(GPIOD, GPIO_PIN_10, 1);
 				if(HAL_GPIO_ReadPin(GPIOD, readPins[i]))
-					rowIndex = 8+i;
+					pushedRowIndex = 8+i;
 				HAL_GPIO_WritePin(GPIOD, GPIO_PIN_10, 0);
 				
 				HAL_GPIO_WritePin(GPIOD, GPIO_PIN_11, 1);
 				if(HAL_GPIO_ReadPin(GPIOD, readPins[i]))
-					rowIndex = 12+i;
+					pushedRowIndex = 12+i;
 			
-				if(rowIndex!=-1){
-					pushedButton = keys[rowIndex][0];
+				if(pushedRowIndex!=-1){
+					pushedButton = keys[pushedRowIndex][0];
 //					setCursor(0,1);
 //					print(&pushedButton);
 					if(pushedButton=='A'){
@@ -547,15 +612,21 @@ void EXTI15_10_IRQHandler(void)
 						if(pushedButton=='1'){
 							navigateToStatus();
 						}
+						else if(pushedButton=='2'){
+							if(isAlarmActive)
+								navigateToDeactive(true);
+							else
+								navigateToAlarmActivated();
+						}
+						else if(pushedButton=='3'){
+							navigateToPass(true);
+						}
 						else if(pushedButton=='4'){
 							navigateToAboutUs();
 						}
-						else if(pushedButton=='3'){
-							navigateToPass();
-						}
 					}
-					else if(menu == PASSWORD || menu == NEW_PASSWORD){
-						if(rowIndex == 7){
+					else if(menu == PASSWORD || menu == NEW_PASSWORD || menu == DEACTIVE){
+						if(pushedRowIndex == 7){// button B pressed
 							if(key!=0){
 								newPassword[passIndex] = key;
 								passIndex+=1;
@@ -570,24 +641,39 @@ void EXTI15_10_IRQHandler(void)
 											navigateToNewPass();
 										}
 										else{
-											navigateToPass();
+											navigateToPass(false);
 										}
 									}
-									else{
+									else if(menu == NEW_PASSWORD){
 										for(int i=0;i<6;i++){
 											password[i] = newPassword[i];
 										}
-										noBlink();
-										navigateToMainMenu();
+										navigateToPassChanged();
+									}
+									else if(menu == DEACTIVE){
+										if(!strcmp(password, newPassword)){
+											isAlarmActive = false;
+											setAlarmState(false);
+											navigateToMainMenu();
+										}
+										else{
+											navigateToDeactive(false);
+										}
 									}
 								}
 							}
 						}
 						else{
+							if(rowIndex != pushedRowIndex)
+								keyIndex = 0;
+							rowIndex = pushedRowIndex;
 							key = keys[rowIndex][keyIndex];
-							keyIndex=(keyIndex+1)%5;
+							keyIndex = (keyIndex+1)%5;
+							if(!keys[rowIndex][keyIndex])
+								keyIndex = 0;
 							setCursor(7+passIndex, 2);
-							print(&key);
+							char t[2] = {key, 0}; 
+							print(t);
 						}
 						
 						
@@ -624,6 +710,14 @@ void TIM8_UP_IRQHandler(void)
 	
 	if(myTime.Hours == 7 && rooms[0].isOn)
 		rooms[0].isOn = false;
+	
+	if(parkingTimer > 0){
+		parkingTimer--;
+	}
+	else if(parkingTimer == 0){
+		parkingTimer--;
+		rooms[3].isOn = false;
+	}
 	
   /* USER CODE END TIM8_UP_IRQn 0 */
   HAL_TIM_IRQHandler(&htim8);

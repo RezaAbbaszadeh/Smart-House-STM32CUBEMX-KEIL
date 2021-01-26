@@ -177,6 +177,29 @@ void createChars(){
 		0x00
 	};
 	
+	byte lightOff[8] = {
+  0x00,
+  0x00,
+  0x0E,
+  0x11,
+  0x11,
+  0x11,
+  0x0E,
+  0x00
+	};
+	
+	
+	byte lightOn[] = {
+		0x00,
+		0x00,
+		0x0E,
+		0x1F,
+		0x1F,
+		0x1F,
+		0x0E,
+		0x00
+	};
+	
 	createChar(0, A);
   createChar(1, Ba);
   createChar(2, S1);
@@ -184,6 +207,8 @@ void createChars(){
   createChar(4, Za);
   createChar(5, D);
   createChar(6, H);
+  createChar(7, lightOff);
+  createChar(8, lightOn);
 }
 
 
@@ -271,7 +296,7 @@ int main(void)
 	setCursor(7,0);
 	print("Status");
 	setCursor(6,1);
-	print("Activate");
+	print("Deactivate");
 	setCursor(3,2);
 	print("Change password");
 	setCursor(6,3);
