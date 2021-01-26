@@ -99,11 +99,12 @@ void sendUsart(char* message){
 void setAlarmState(int ringReason){
 	if(ringReason && isAlarmActive){
 		isAlarmRinging = ringReason;
-		sendUsart("hello");
+		sendUsart("Alarm Triggered");
 	}
 	else{
 		isAlarmRinging = 0;
 		HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15, 0);
+		sendUsart("Alarm Deactivated");	
 	}
 }
 
@@ -185,6 +186,7 @@ void navigateToPassChanged(){
 	clear();
 	setCursor(2,4);
 	print("password changed");
+	sendUsart("Password changed");
 }
 
 
@@ -207,6 +209,7 @@ void navigateToAlarmActivated(){
 	clear();
 	setCursor(0,1);
 	print("Alarm is active now");
+	sendUsart("Alarm Activated");
 }
 
 
@@ -276,13 +279,22 @@ void EXTI9_5_IRQHandler(void)
   /* USER CODE BEGIN EXTI9_5_IRQn 0 */
 
 	
-	// room 3 and 4
+	// room 3 and 4 buttons
 	if(HAL_GetTick() - lastTickKeypad > 300){
 		lastTickKeypad = HAL_GetTick();
 		
 		for(int i=2; i<4; i++){
 			if(HAL_GPIO_ReadPin(rooms[i].buttonTypeDef, rooms[i].buttonPin)){
 				rooms[i].isOn = !rooms[i].isOn;
+				char str[30];
+				sprintf(str, "Room %d button pressed", i+1);
+				sendUsart(str);
+				if(rooms[i].isOn)
+					sprintf(str, "Room %d Lamp turned on", i+1);
+				else
+					sprintf(str, "Room %d Lamp turned off", i+1);
+				sendUsart(str);
+					
 				return;
 			}
 		}
@@ -290,11 +302,14 @@ void EXTI9_5_IRQHandler(void)
 	
 	// PIR sensor
 	if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_9)==1){
-		if(myTime.Hours >=0 && myTime.Hours <7)
-			setAlarmState(MOVE_DETECTED);
+		sendUsart("Move detected");
+		if(myTime.Hours >=0 && myTime.Hours <7){
+			setAlarmState(MOVE_DETECTED);	
+		}
 		else if(!rooms[3].isOn){
 			parkingTimer = 24 * 60;
 			rooms[3].isOn = true;
+			sendUsart("Room 4 (parking) Lamp turned on");
 		}
 	}
   /* USER CODE END EXTI9_5_IRQn 0 */
@@ -363,16 +378,27 @@ void TIM1_UP_TIM16_IRQHandler(void)
 	scaledVolume = MAX(0,(float)(volume-1150)/2800 * 60);
 	mixedTempVolume = (int)scaledTemp*100 + scaledVolume;
 	if(scaledTemp > scaledVolume){
-		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, 1); // relay cooling system
-		if(scaledTemp > scaledVolume + 10)
-			setAlarmState(HIGH_TEMP);
-		else if(isAlarmRinging == HIGH_TEMP)
+		if(!HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_8)){
+			sendUsart("High temperature");
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, 1); // relay cooling system
+		}
+		if(scaledTemp > scaledVolume + 10){
+			if(isAlarmRinging!=HIGH_TEMP){
+				sendUsart("Fire warning");
+				setAlarmState(HIGH_TEMP);
+			}
+		}
+		else if(isAlarmRinging == HIGH_TEMP){	
+			sendUsart("Fire extinguished");
 			setAlarmState(0);
+		}
 	}
 	else{
 		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, 0); // relay cooling system
-		if(isAlarmRinging == HIGH_TEMP)
+		if(isAlarmRinging == HIGH_TEMP){
+			sendUsart("Fire extinguished");
 			setAlarmState(0);
+		}
 	}
 	
 	HAL_ADC_Start_IT(&hadc2);
@@ -393,8 +419,6 @@ void TIM2_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM2_IRQn 0 */
 
-	
-	
 	light = HAL_ADC_GetValue(&hadc4);
 	scaledLight = (light - 980)*100/1100;
 	HAL_RTC_GetTime(&hrtc, &myTime, RTC_FORMAT_BIN);
@@ -537,12 +561,17 @@ void EXTI15_10_IRQHandler(void)
 		// room 2
 		if(HAL_GPIO_ReadPin(rooms[1].buttonTypeDef, rooms[1].buttonPin)){
 				rooms[1].isOn = !rooms[1].isOn;
+				sendUsart("Room 2 button pressed");
 				if(myTime.Hours >= 0 && myTime.Hours < 7){
 					if(rooms[1].isOn){
 						rooms[0].isOn = false;
+						sendUsart("Room 2 Lamp turned on");
+						sendUsart("Room 1 Lamp turned off");
 					}
 					else{
 						rooms[0].isOn = true;
+						sendUsart("Room 2 Lamp turned off");
+						sendUsart("Room 1 Lamp turned on");
 					}
 				}
 				return;
@@ -550,7 +579,12 @@ void EXTI15_10_IRQHandler(void)
 		// room 1
 		else if(HAL_GPIO_ReadPin(rooms[0].buttonTypeDef, rooms[0].buttonPin)){
 			rooms[0].isOn = !rooms[0].isOn;
-				return;
+			sendUsart("Room 1 button pressed");
+			if(rooms[0].isOn)
+				sendUsart("Room 1 Lamp turned on");
+			else
+				sendUsart("Room 1 Lamp turned off");
+			return;
 		}
 			
 		
@@ -599,10 +633,10 @@ void EXTI15_10_IRQHandler(void)
 				if(HAL_GPIO_ReadPin(GPIOD, readPins[i]))
 					pushedRowIndex = 12+i;
 			
+				
 				if(pushedRowIndex!=-1){
 					pushedButton = keys[pushedRowIndex][0];
-//					setCursor(0,1);
-//					print(&pushedButton);
+					
 					if(pushedButton=='A'){
 						if(menu == PASSWORD || menu==NEW_PASSWORD)
 							resetPasswordVars();
@@ -641,6 +675,7 @@ void EXTI15_10_IRQHandler(void)
 											navigateToNewPass();
 										}
 										else{
+											sendUsart("Wrong password attempt");
 											navigateToPass(false);
 										}
 									}
@@ -658,6 +693,7 @@ void EXTI15_10_IRQHandler(void)
 										}
 										else{
 											navigateToDeactive(false);
+											sendUsart("Wrong password attempt");
 										}
 									}
 								}
@@ -704,12 +740,17 @@ void EXTI15_10_IRQHandler(void)
 void TIM8_UP_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM8_UP_IRQn 0 */
-	if(myTime.Hours >= 17 && myTime.Hours < 24 && scaledLight < 50){
+	if(myTime.Hours >= 17 && myTime.Hours < 24 && scaledLight < 50 && !rooms[2].isOn){
+		sendUsart("Low light level");
 		rooms[2].isOn = true;
+		sendUsart("Room 3 Lamp turned on");
 	}		
 	
-	if(myTime.Hours == 7 && rooms[0].isOn)
+	if(myTime.Hours == 7 && rooms[0].isOn){
+		sendUsart("It's morning");
 		rooms[0].isOn = false;
+		sendUsart("Room 1 Lamp turned off");
+	}
 	
 	if(parkingTimer > 0){
 		parkingTimer--;
@@ -717,6 +758,7 @@ void TIM8_UP_IRQHandler(void)
 	else if(parkingTimer == 0){
 		parkingTimer--;
 		rooms[3].isOn = false;
+		sendUsart("Room 4 (parking) Lamp turned off");
 	}
 	
   /* USER CODE END TIM8_UP_IRQn 0 */

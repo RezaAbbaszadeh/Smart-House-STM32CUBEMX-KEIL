@@ -211,6 +211,7 @@ void createChars(){
   createChar(8, lightOn);
 }
 
+extern void sendUsart(char* message);
 
 /* USER CODE END PV */
 
@@ -295,7 +296,7 @@ int main(void)
 	createChars();
 	setCursor(7,0);
 	print("Status");
-	setCursor(6,1);
+	setCursor(5,1);
 	print("Deactivate");
 	setCursor(3,2);
 	print("Change password");
@@ -333,6 +334,8 @@ int main(void)
 	
 	HAL_RTC_SetDate(&hrtc, &myDate, RTC_FORMAT_BIN);
 	HAL_RTC_SetTime(&hrtc, &myTime, RTC_FORMAT_BIN);
+	
+	sendUsart("System running...");
 	
 	// Timers
 	HAL_TIM_Base_Start_IT(&htim2);
