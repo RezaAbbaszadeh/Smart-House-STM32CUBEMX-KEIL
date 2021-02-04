@@ -40,7 +40,7 @@
 #include <string.h>
 #include "LiquidCrystal.h"
 #define MAX(a,b) ((a) > (b) ? (a) : (b))
-const int FADE_INTERVAL = 10 , LIGHT_ON = 8, LIGHT_OFF = 7, MOVE_DETECTED = 1, HIGH_TEMP = 2;
+const int FADE_INTERVAL = 10 , LIGHT_ON = 7, LIGHT_OFF = 6, MOVE_DETECTED = 1, HIGH_TEMP = 2;
 int lastTickKeypad = 0;
 char pushedButton = 0;
 
@@ -52,6 +52,7 @@ float scaledTemp = 0;
 int volume = 0;
 float scaledVolume = 0;
 int mixedTempVolume = 0, index7seg = 0;
+int toggleLampsValue = 0;
 
 
 bool isAlarmActive = true;
@@ -91,7 +92,7 @@ void navigateToStatus(){
 
 void sendUsart(char* message){
 	unsigned char log[100]="";
-	int n = sprintf(log, "%02d/%02d/20%02d %02d:%02d:%02d %s\n",
+	int n = sprintf(log, "%02d/%02d/20%02d %02d:%02d:%02d %s\r\n",
 		myDate.Date, myDate.Month, myDate.Year, myTime.Hours, myTime.Minutes, myTime.Seconds, message);
 	HAL_UART_Transmit(&huart3,log,n,1000);	
 }
@@ -107,6 +108,7 @@ void setAlarmState(int ringReason){
 		sendUsart("Alarm Deactivated");	
 	}
 }
+
 
 void navigateToMainMenu(){
 	if(menu!=MAIN){
@@ -135,14 +137,16 @@ void navigateToAboutUs(){
 	if(menu==MAIN){
 		menu = ABOUT;
 		clear();
-		setCursor(10, 0);
-		write(6);
-		write(5);
-		write(4);
-		write(3);
-		write(2);
-		write(1);
-		write(0);
+		setCursor(5,0);
+		print("SMART HOME");
+		
+		setCursor(12, 2);
+		for(int i = 6; i>=0 ; i--){
+			write(i);
+		}
+		
+		setCursor(0,3);
+		print("Winter 99");
 	}
 }
 
@@ -303,7 +307,7 @@ void EXTI9_5_IRQHandler(void)
 	// PIR sensor
 	if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_9)==1){
 		sendUsart("Move detected");
-		if(myTime.Hours >=0 && myTime.Hours <7){
+		if(myTime.Hours >=0 && myTime.Hours <7 && isAlarmRinging!=MOVE_DETECTED){
 			setAlarmState(MOVE_DETECTED);	
 		}
 		else if(!rooms[3].isOn){
@@ -369,6 +373,14 @@ void TIM1_UP_TIM16_IRQHandler(void)
 	
 	if(isAlarmRinging){
 		HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15);
+		
+		if(toggleLampsValue)
+			toggleLampsValue = 0;
+		else
+			toggleLampsValue = 100;
+		for(int i=0; i<4; i++){
+			__HAL_TIM_SET_COMPARE(&htim3, rooms[i].channel, toggleLampsValue);
+		}
 	}
 	
 	
@@ -384,19 +396,19 @@ void TIM1_UP_TIM16_IRQHandler(void)
 		}
 		if(scaledTemp > scaledVolume + 10){
 			if(isAlarmRinging!=HIGH_TEMP){
-				sendUsart("Fire warning");
+				sendUsart("High temperature! Fire warning");
 				setAlarmState(HIGH_TEMP);
 			}
 		}
 		else if(isAlarmRinging == HIGH_TEMP){	
-			sendUsart("Fire extinguished");
+			sendUsart("temperature lowered. Fire extinguished");
 			setAlarmState(0);
 		}
 	}
 	else{
 		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, 0); // relay cooling system
 		if(isAlarmRinging == HIGH_TEMP){
-			sendUsart("Fire extinguished");
+			sendUsart("temperature lowered. Fire extinguished");
 			setAlarmState(0);
 		}
 	}
@@ -445,7 +457,7 @@ void TIM2_IRQHandler(void)
 			if(rooms[i].isOn)
 				write(LIGHT_ON);
 			else
-				write(LIGHT_OFF);
+				print("o");
 		}
 		
 		
@@ -480,16 +492,22 @@ void TIM4_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM4_IRQn 0 */
 
+	
 	for(int i=0; i<4; i++){
-		if(rooms[i].isOn * 100 > rooms[i].fade){
+		if(isAlarmRinging != 0){
+				rooms[i].fade = toggleLampsValue;
+			
+		}
+		else if(rooms[i].isOn * 100 > rooms[i].fade){
 			rooms[i].fade = rooms[i].fade + 10;
-			__HAL_TIM_SET_COMPARE(&htim3, rooms[i].channel, rooms[i].fade);
+			
 		}
 		else if(rooms[i].isOn * 100 < rooms[i].fade){
 			rooms[i].fade = rooms[i].fade - 10;
-			__HAL_TIM_SET_COMPARE(&htim3, rooms[i].channel, rooms[i].fade);
 		}
+		__HAL_TIM_SET_COMPARE(&htim3, rooms[i].channel, rooms[i].fade);
 	}
+	
 
 	
   /* USER CODE END TIM4_IRQn 0 */
@@ -511,9 +529,24 @@ void USART3_IRQHandler(void)
   /* USER CODE BEGIN USART3_IRQn 1 */
 
 	if(uartChar == 0x0A){
-		if(!strcasecmp(uart, "A"))
-			navigateToMainMenu();
-		else if(!strcasecmp(strtok(uart, " "), "SetDateTime")){
+		if(strstr(uart, "Change Password ") && strlen(uart)==27){
+			char currentPass[6], newPassword[6];
+			strncpy(currentPass, uart + 16, 5);
+			strncpy(newPassword, uart + 22, 5);
+			
+			currentPass[5] = 0;
+			newPassword[5] = 0;
+			if(!strcasecmp(password, currentPass)){
+				for(int i=0;i<6;i++){
+					password[i] = newPassword[i];
+				}
+				sendUsart("Password changed");
+			}
+			else{
+				sendUsart("Wrong password attempt");
+			}
+		}
+		else if(strstr(uart, "SetDateTime")){
 			char dayStr[3],monthStr[3], yearStr[3], hourStr[3], minStr[3];
 			strncpy(dayStr, uart + 12, 2);
 			strncpy(monthStr, uart + 15, 2);
@@ -534,6 +567,42 @@ void USART3_IRQHandler(void)
 			
 			HAL_RTC_SetTime(&hrtc, &localTime, RTC_FORMAT_BIN);
 			HAL_RTC_SetDate(&hrtc, &localDate, RTC_FORMAT_BIN);
+		}
+		else if(strstr(uart, "Lamp Room")){
+			int roomNumber = uart[10] - '0';
+			
+			if(roomNumber==1){
+				rooms[1].isOn = !rooms[1].isOn;
+				sendUsart("Room 2 REMOTE button pressed");
+				
+				if(rooms[1].isOn){
+					sendUsart("Room 2 Lamp turned on");				
+					if(myTime.Hours >= 0 && myTime.Hours < 7){
+						rooms[0].isOn = false;
+						sendUsart("Room 1 Lamp turned off");
+					}
+				}
+				else{
+					sendUsart("Room 2 Lamp turned off");
+					if(myTime.Hours >= 0 && myTime.Hours < 7){
+						rooms[0].isOn = true;
+						sendUsart("Room 1 Lamp turned on");
+					}
+				}
+			}
+			else{
+				rooms[roomNumber].isOn = !rooms[roomNumber].isOn;
+				char str[30];
+				sprintf(str, "Room %d REMOTE button pressed", roomNumber+1);
+				sendUsart(str);
+				if(rooms[roomNumber].isOn)
+					sprintf(str, "Room %d Lamp turned on", roomNumber+1);
+				else
+					sprintf(str, "Room %d Lamp turned off", roomNumber+1);
+				sendUsart(str);
+			}
+		
+			
 		}
 		
 		for(int i =0 ;i<50 ;i++)
@@ -562,18 +631,22 @@ void EXTI15_10_IRQHandler(void)
 		if(HAL_GPIO_ReadPin(rooms[1].buttonTypeDef, rooms[1].buttonPin)){
 				rooms[1].isOn = !rooms[1].isOn;
 				sendUsart("Room 2 button pressed");
-				if(myTime.Hours >= 0 && myTime.Hours < 7){
-					if(rooms[1].isOn){
+				
+				if(rooms[1].isOn){
+					sendUsart("Room 2 Lamp turned on");				
+					if(myTime.Hours >= 0 && myTime.Hours < 7){
 						rooms[0].isOn = false;
-						sendUsart("Room 2 Lamp turned on");
 						sendUsart("Room 1 Lamp turned off");
 					}
-					else{
+				}
+				else{
+					sendUsart("Room 2 Lamp turned off");
+					if(myTime.Hours >= 0 && myTime.Hours < 7){
 						rooms[0].isOn = true;
-						sendUsart("Room 2 Lamp turned off");
 						sendUsart("Room 1 Lamp turned on");
 					}
 				}
+				
 				return;
 		}
 		// room 1

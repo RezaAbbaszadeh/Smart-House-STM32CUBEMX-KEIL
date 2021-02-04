@@ -207,8 +207,7 @@ void createChars(){
   createChar(4, Za);
   createChar(5, D);
   createChar(6, H);
-  createChar(7, lightOff);
-  createChar(8, lightOn);
+  createChar(7, lightOn);
 }
 
 extern void sendUsart(char* message);

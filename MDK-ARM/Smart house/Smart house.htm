@@ -3,7 +3,7 @@
 <title>Static Call Graph - [Smart house\Smart house.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image Smart house\Smart house.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Tue Jan 26 15:02:47 2021
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Thu Feb 04 23:02:38 2021
 <BR><P>
 <H3>Maximum Stack Usage =        320 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -407,14 +407,21 @@ Global Symbols
 <BR><BR>[Calls]<UL><LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memset
 </UL>
 
-<P><STRONG><a name="[f8]"></a>strncpy</STRONG> (Thumb, 24 bytes, Stack size 8 bytes, strncpy.o(.text))
+<P><STRONG><a name="[f7]"></a>strstr</STRONG> (Thumb, 36 bytes, Stack size 12 bytes, strstr.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = strstr
+</UL>
+<BR>[Called By]<UL><LI><a href="#[31]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART3_IRQHandler
+</UL>
+
+<P><STRONG><a name="[f9]"></a>strncpy</STRONG> (Thumb, 24 bytes, Stack size 8 bytes, strncpy.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = strncpy
 </UL>
 <BR>[Called By]<UL><LI><a href="#[31]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART3_IRQHandler
 </UL>
 
-<P><STRONG><a name="[10e]"></a>strlen</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, strlen.o(.text))
+<P><STRONG><a name="[f8]"></a>strlen</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, strlen.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print
+<LI><a href="#[31]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART3_IRQHandler
 </UL>
 
 <P><STRONG><a name="[79]"></a>strcmp</STRONG> (Thumb, 28 bytes, Stack size 8 bytes, strcmp.o(.text))
@@ -425,12 +432,6 @@ Global Symbols
 
 <P><STRONG><a name="[f5]"></a>strncat</STRONG> (Thumb, 40 bytes, Stack size 8 bytes, strncat.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = strncat
-</UL>
-<BR>[Called By]<UL><LI><a href="#[31]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART3_IRQHandler
-</UL>
-
-<P><STRONG><a name="[f7]"></a>strtok</STRONG> (Thumb, 62 bytes, Stack size 16 bytes, strtok.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = strtok
 </UL>
 <BR>[Called By]<UL><LI><a href="#[31]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART3_IRQHandler
 </UL>
@@ -458,16 +459,16 @@ Global Symbols
 
 <P><STRONG><a name="[11e]"></a>__aeabi_uidiv</STRONG> (Thumb, 0 bytes, Stack size 12 bytes, uidiv.o(.text), UNUSED)
 
-<P><STRONG><a name="[ff]"></a>__aeabi_uidivmod</STRONG> (Thumb, 44 bytes, Stack size 12 bytes, uidiv.o(.text), UNUSED)
-<BR><BR>[Called By]<UL><LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_core
+<P><STRONG><a name="[100]"></a>__aeabi_uidivmod</STRONG> (Thumb, 44 bytes, Stack size 12 bytes, uidiv.o(.text), UNUSED)
+<BR><BR>[Called By]<UL><LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_core
 </UL>
 
 <P><STRONG><a name="[5b]"></a>__aeabi_uldivmod</STRONG> (Thumb, 98 bytes, Stack size 40 bytes, uldiv.o(.text), UNUSED)
 <BR><BR>[Calls]<UL><LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_llsl
 <LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_llsr
 </UL>
-<BR>[Called By]<UL><LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_core
-<LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_fp_digits
+<BR>[Called By]<UL><LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_core
+<LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_fp_digits
 </UL>
 
 <P><STRONG><a name="[57]"></a>tolower</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, tolower.o(.text))
@@ -477,9 +478,9 @@ Global Symbols
 <P><STRONG><a name="[5a]"></a>strtol</STRONG> (Thumb, 112 bytes, Stack size 32 bytes, strtol.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = strtol &rArr; _strtoul
 </UL>
-<BR>[Calls]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_errno_addr
+<BR>[Calls]<UL><LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_ctype_table
+<LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_errno_addr
 <LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_strtoul
-<LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_ctype_table
 </UL>
 <BR>[Called By]<UL><LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;atoi
 </UL>
@@ -494,7 +495,7 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_drsub
 <LI><a href="#[64]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dsub
-<LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_fp_digits
+<LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_fp_digits
 </UL>
 
 <P><STRONG><a name="[64]"></a>__aeabi_dsub</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, dadd.o(.text), UNUSED)
@@ -508,24 +509,24 @@ Global Symbols
 <P><STRONG><a name="[66]"></a>__aeabi_dmul</STRONG> (Thumb, 228 bytes, Stack size 48 bytes, dmul.o(.text), UNUSED)
 <BR><BR>[Calls]<UL><LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_double_epilogue
 </UL>
-<BR>[Called By]<UL><LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_fp_digits
+<BR>[Called By]<UL><LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_fp_digits
 </UL>
 
 <P><STRONG><a name="[67]"></a>__aeabi_ddiv</STRONG> (Thumb, 222 bytes, Stack size 32 bytes, ddiv.o(.text), UNUSED)
 <BR><BR>[Calls]<UL><LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_double_round
 </UL>
-<BR>[Called By]<UL><LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_fp_digits
+<BR>[Called By]<UL><LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_fp_digits
 </UL>
 
 <P><STRONG><a name="[68]"></a>__aeabi_d2ulz</STRONG> (Thumb, 48 bytes, Stack size 0 bytes, dfixul.o(.text), UNUSED)
 <BR><BR>[Calls]<UL><LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_llsl
 <LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_llsr
 </UL>
-<BR>[Called By]<UL><LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_fp_digits
+<BR>[Called By]<UL><LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_fp_digits
 </UL>
 
-<P><STRONG><a name="[fc]"></a>__aeabi_cdrcmple</STRONG> (Thumb, 48 bytes, Stack size 0 bytes, cdrcmple.o(.text), UNUSED)
-<BR><BR>[Called By]<UL><LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_fp_digits
+<P><STRONG><a name="[fd]"></a>__aeabi_cdrcmple</STRONG> (Thumb, 48 bytes, Stack size 0 bytes, cdrcmple.o(.text), UNUSED)
+<BR><BR>[Called By]<UL><LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_fp_digits
 </UL>
 
 <P><STRONG><a name="[52]"></a>__scatterload</STRONG> (Thumb, 28 bytes, Stack size 0 bytes, init.o(.text))
@@ -583,7 +584,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_strtoul
 </UL>
 
-<P><STRONG><a name="[32]"></a>EXTI15_10_IRQHandler</STRONG> (Thumb, 778 bytes, Stack size 128 bytes, stm32f3xx_it.o(i.EXTI15_10_IRQHandler))
+<P><STRONG><a name="[32]"></a>EXTI15_10_IRQHandler</STRONG> (Thumb, 782 bytes, Stack size 128 bytes, stm32f3xx_it.o(i.EXTI15_10_IRQHandler))
 <BR><BR>[Stack]<UL><LI>Max Depth = 320<LI>Call Chain = EXTI15_10_IRQHandler &rArr; setAlarmState &rArr; sendUsart &rArr; HAL_UART_Transmit &rArr; UART_WaitOnFlagUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setCursor
@@ -608,7 +609,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f303xc.o(RESET)
 </UL>
-<P><STRONG><a name="[21]"></a>EXTI9_5_IRQHandler</STRONG> (Thumb, 202 bytes, Stack size 48 bytes, stm32f3xx_it.o(i.EXTI9_5_IRQHandler))
+<P><STRONG><a name="[21]"></a>EXTI9_5_IRQHandler</STRONG> (Thumb, 208 bytes, Stack size 48 bytes, stm32f3xx_it.o(i.EXTI9_5_IRQHandler))
 <BR><BR>[Stack]<UL><LI>Max Depth = 240<LI>Call Chain = EXTI9_5_IRQHandler &rArr; setAlarmState &rArr; sendUsart &rArr; HAL_UART_Transmit &rArr; UART_WaitOnFlagUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
@@ -679,8 +680,8 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
 </UL>
-<BR>[Called By]<UL><LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;begin
-<LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clear
+<BR>[Called By]<UL><LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;begin
+<LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clear
 <LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pulseEnable
 </UL>
 
@@ -705,7 +706,7 @@ Global Symbols
 <LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_PCD_MspInit
 <LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_I2C_MspInit
 <LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_ADC_MspInit
-<LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;begin
+<LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;begin
 <LI><a href="#[b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_MspPostInit
 <LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_GPIO_Init
 </UL>
@@ -721,7 +722,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[71]"></a>HAL_GPIO_WritePin</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, stm32f3xx_hal_gpio.o(i.HAL_GPIO_WritePin))
-<BR><BR>[Called By]<UL><LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;begin
+<BR><BR>[Called By]<UL><LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;begin
 <LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_GPIO_Init
 <LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnOff7seg
@@ -731,8 +732,8 @@ Global Symbols
 <LI><a href="#[22]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM1_BRK_TIM15_IRQHandler
 <LI><a href="#[32]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI15_10_IRQHandler
 <LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;write8bits
-<LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;write4bits
-<LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;send
+<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;write4bits
+<LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;send
 <LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pulseEnable
 </UL>
 
@@ -1054,7 +1055,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_Base_Init
 </UL>
 
-<P><STRONG><a name="[10c]"></a>HAL_TIM_Base_Start_IT</STRONG> (Thumb, 24 bytes, Stack size 0 bytes, stm32f3xx_hal_tim.o(i.HAL_TIM_Base_Start_IT))
+<P><STRONG><a name="[10d]"></a>HAL_TIM_Base_Start_IT</STRONG> (Thumb, 24 bytes, Stack size 0 bytes, stm32f3xx_hal_tim.o(i.HAL_TIM_Base_Start_IT))
 <BR><BR>[Called By]<UL><LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
@@ -1286,7 +1287,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f303xc.o(RESET)
 </UL>
-<P><STRONG><a name="[23]"></a>TIM1_UP_TIM16_IRQHandler</STRONG> (Thumb, 308 bytes, Stack size 24 bytes, stm32f3xx_it.o(i.TIM1_UP_TIM16_IRQHandler))
+<P><STRONG><a name="[23]"></a>TIM1_UP_TIM16_IRQHandler</STRONG> (Thumb, 392 bytes, Stack size 24 bytes, stm32f3xx_it.o(i.TIM1_UP_TIM16_IRQHandler))
 <BR><BR>[Stack]<UL><LI>Max Depth = 216<LI>Call Chain = TIM1_UP_TIM16_IRQHandler &rArr; setAlarmState &rArr; sendUsart &rArr; HAL_UART_Transmit &rArr; UART_WaitOnFlagUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_IRQHandler
@@ -1300,7 +1301,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f303xc.o(RESET)
 </UL>
-<P><STRONG><a name="[26]"></a>TIM2_IRQHandler</STRONG> (Thumb, 220 bytes, Stack size 56 bytes, stm32f3xx_it.o(i.TIM2_IRQHandler))
+<P><STRONG><a name="[26]"></a>TIM2_IRQHandler</STRONG> (Thumb, 224 bytes, Stack size 56 bytes, stm32f3xx_it.o(i.TIM2_IRQHandler))
 <BR><BR>[Stack]<UL><LI>Max Depth = 136<LI>Call Chain = TIM2_IRQHandler &rArr; print &rArr; send &rArr; write8bits &rArr; pulseEnable &rArr; HAL_Delay
 </UL>
 <BR>[Calls]<UL><LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;write
@@ -1323,7 +1324,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f303xc.o(RESET)
 </UL>
-<P><STRONG><a name="[28]"></a>TIM4_IRQHandler</STRONG> (Thumb, 108 bytes, Stack size 16 bytes, stm32f3xx_it.o(i.TIM4_IRQHandler))
+<P><STRONG><a name="[28]"></a>TIM4_IRQHandler</STRONG> (Thumb, 142 bytes, Stack size 16 bytes, stm32f3xx_it.o(i.TIM4_IRQHandler))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = TIM4_IRQHandler &rArr; HAL_TIM_IRQHandler
 </UL>
 <BR>[Calls]<UL><LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_IRQHandler
@@ -1433,25 +1434,27 @@ Global Symbols
 <LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART_CheckIdleState
 </UL>
 
-<P><STRONG><a name="[31]"></a>USART3_IRQHandler</STRONG> (Thumb, 248 bytes, Stack size 56 bytes, stm32f3xx_it.o(i.USART3_IRQHandler))
-<BR><BR>[Stack]<UL><LI>Max Depth = 144<LI>Call Chain = USART3_IRQHandler &rArr; navigateToMainMenu &rArr; print &rArr; send &rArr; write8bits &rArr; pulseEnable &rArr; HAL_Delay
+<P><STRONG><a name="[31]"></a>USART3_IRQHandler</STRONG> (Thumb, 462 bytes, Stack size 64 bytes, stm32f3xx_it.o(i.USART3_IRQHandler))
+<BR><BR>[Stack]<UL><LI>Max Depth = 248<LI>Call Chain = USART3_IRQHandler &rArr; sendUsart &rArr; HAL_UART_Transmit &rArr; UART_WaitOnFlagUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_Receive_IT
 <LI><a href="#[c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_IRQHandler
 <LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RTC_SetTime
 <LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RTC_SetDate
-<LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;navigateToMainMenu
+<LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendUsart
 <LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;atoi
+<LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
 <LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strcasecmp
-<LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strtok
 <LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strncat
-<LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strncpy
+<LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strlen
+<LI><a href="#[f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strncpy
+<LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strstr
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f303xc.o(RESET)
 </UL>
-<P><STRONG><a name="[f9]"></a>__0sprintf</STRONG> (Thumb, 34 bytes, Stack size 24 bytes, printfa.o(i.__0sprintf), UNUSED)
+<P><STRONG><a name="[fa]"></a>__0sprintf</STRONG> (Thumb, 34 bytes, Stack size 24 bytes, printfa.o(i.__0sprintf), UNUSED)
 <BR><BR>[Calls]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_sputc
-<LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_core
+<LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_core
 </UL>
 
 <P><STRONG><a name="[123]"></a>__1sprintf</STRONG> (Thumb, 0 bytes, Stack size 24 bytes, printfa.o(i.__0sprintf), UNUSED)
@@ -1460,6 +1463,7 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = __2sprintf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendUsart
+<LI><a href="#[31]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART3_IRQHandler
 <LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM2_IRQHandler
 <LI><a href="#[21]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI9_5_IRQHandler
 </UL>
@@ -1482,40 +1486,40 @@ Global Symbols
 
 <P><STRONG><a name="[129]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
 
-<P><STRONG><a name="[100]"></a>begin</STRONG> (Thumb, 304 bytes, Stack size 32 bytes, liquidcrystal.o(i.begin))
+<P><STRONG><a name="[101]"></a>begin</STRONG> (Thumb, 304 bytes, Stack size 32 bytes, liquidcrystal.o(i.begin))
 <BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = begin &rArr; clear &rArr; command &rArr; send &rArr; write8bits &rArr; pulseEnable &rArr; HAL_Delay
 </UL>
 <BR>[Calls]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_Init
-<LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clear
+<LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clear
 <LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
 <LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
-<LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;write4bits
-<LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setRowOffsets
-<LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;enableClock
-<LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;display
-<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;command
+<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;write4bits
+<LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setRowOffsets
+<LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;enableClock
+<LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;display
+<LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;command
 </UL>
 <BR>[Called By]<UL><LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;init
 </UL>
 
-<P><STRONG><a name="[107]"></a>blink</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, liquidcrystal.o(i.blink))
+<P><STRONG><a name="[108]"></a>blink</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, liquidcrystal.o(i.blink))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = blink &rArr; command &rArr; send &rArr; write8bits &rArr; pulseEnable &rArr; HAL_Delay
 </UL>
-<BR>[Calls]<UL><LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;command
+<BR>[Calls]<UL><LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;command
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;navigateToPass
 <LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;navigateToNewPass
 <LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;navigateToDeactive
 </UL>
 
-<P><STRONG><a name="[106]"></a>clear</STRONG> (Thumb, 18 bytes, Stack size 8 bytes, liquidcrystal.o(i.clear))
+<P><STRONG><a name="[107]"></a>clear</STRONG> (Thumb, 18 bytes, Stack size 8 bytes, liquidcrystal.o(i.clear))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = clear &rArr; command &rArr; send &rArr; write8bits &rArr; pulseEnable &rArr; HAL_Delay
 </UL>
 <BR>[Calls]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
-<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;command
+<LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;command
 </UL>
-<BR>[Called By]<UL><LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;begin
+<BR>[Called By]<UL><LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;begin
 <LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;navigateToStatus
 <LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;navigateToPassChanged
 <LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;navigateToPass
@@ -1526,61 +1530,61 @@ Global Symbols
 <LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;navigateToAboutUs
 </UL>
 
-<P><STRONG><a name="[104]"></a>command</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, liquidcrystal.o(i.command))
+<P><STRONG><a name="[105]"></a>command</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, liquidcrystal.o(i.command))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = command &rArr; send &rArr; write8bits &rArr; pulseEnable &rArr; HAL_Delay
 </UL>
-<BR>[Calls]<UL><LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;send
+<BR>[Calls]<UL><LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;send
 </UL>
-<BR>[Called By]<UL><LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;createChar
-<LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;begin
+<BR>[Called By]<UL><LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;createChar
+<LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;begin
 <LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setCursor
-<LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;noBlink
-<LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clear
-<LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;blink
-<LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;display
+<LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;noBlink
+<LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clear
+<LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;blink
+<LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;display
 </UL>
 
-<P><STRONG><a name="[109]"></a>createChar</STRONG> (Thumb, 36 bytes, Stack size 16 bytes, liquidcrystal.o(i.createChar))
+<P><STRONG><a name="[10a]"></a>createChar</STRONG> (Thumb, 36 bytes, Stack size 16 bytes, liquidcrystal.o(i.createChar))
 <BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = createChar &rArr; send &rArr; write8bits &rArr; pulseEnable &rArr; HAL_Delay
 </UL>
-<BR>[Calls]<UL><LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;send
-<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;command
+<BR>[Calls]<UL><LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;send
+<LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;command
 </UL>
-<BR>[Called By]<UL><LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;createChars
+<BR>[Called By]<UL><LI><a href="#[10b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;createChars
 </UL>
 
-<P><STRONG><a name="[10a]"></a>createChars</STRONG> (Thumb, 170 bytes, Stack size 80 bytes, main.o(i.createChars))
-<BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = createChars &rArr; createChar &rArr; send &rArr; write8bits &rArr; pulseEnable &rArr; HAL_Delay
+<P><STRONG><a name="[10b]"></a>createChars</STRONG> (Thumb, 152 bytes, Stack size 72 bytes, main.o(i.createChars))
+<BR><BR>[Stack]<UL><LI>Max Depth = 152<LI>Call Chain = createChars &rArr; createChar &rArr; send &rArr; write8bits &rArr; pulseEnable &rArr; HAL_Delay
 </UL>
-<BR>[Calls]<UL><LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;createChar
+<BR>[Calls]<UL><LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;createChar
 </UL>
 <BR>[Called By]<UL><LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[10b]"></a>createRoom</STRONG> (Thumb, 26 bytes, Stack size 12 bytes, main.o(i.createRoom))
+<P><STRONG><a name="[10c]"></a>createRoom</STRONG> (Thumb, 26 bytes, Stack size 12 bytes, main.o(i.createRoom))
 <BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = createRoom
 </UL>
 <BR>[Called By]<UL><LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[105]"></a>display</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, liquidcrystal.o(i.display))
+<P><STRONG><a name="[106]"></a>display</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, liquidcrystal.o(i.display))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = display &rArr; command &rArr; send &rArr; write8bits &rArr; pulseEnable &rArr; HAL_Delay
 </UL>
-<BR>[Calls]<UL><LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;command
+<BR>[Calls]<UL><LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;command
 </UL>
-<BR>[Called By]<UL><LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;begin
+<BR>[Called By]<UL><LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;begin
 </UL>
 
-<P><STRONG><a name="[102]"></a>enableClock</STRONG> (Thumb, 142 bytes, Stack size 8 bytes, liquidcrystal.o(i.enableClock))
+<P><STRONG><a name="[103]"></a>enableClock</STRONG> (Thumb, 142 bytes, Stack size 8 bytes, liquidcrystal.o(i.enableClock))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = enableClock
 </UL>
-<BR>[Called By]<UL><LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;begin
+<BR>[Called By]<UL><LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;begin
 </UL>
 
 <P><STRONG><a name="[d2]"></a>init</STRONG> (Thumb, 72 bytes, Stack size 40 bytes, liquidcrystal.o(i.init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 144<LI>Call Chain = init &rArr; begin &rArr; clear &rArr; command &rArr; send &rArr; write8bits &rArr; pulseEnable &rArr; HAL_Delay
 </UL>
-<BR>[Calls]<UL><LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;begin
+<BR>[Calls]<UL><LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;begin
 </UL>
 <BR>[Called By]<UL><LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LiquidCrystal
 </UL>
@@ -1588,15 +1592,15 @@ Global Symbols
 <P><STRONG><a name="[4c]"></a>main</STRONG> (Thumb, 554 bytes, Stack size 24 bytes, main.o(i.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 264<LI>Call Chain = main &rArr; MX_ADC1_Init &rArr; HAL_ADC_Init &rArr; HAL_ADC_MspInit &rArr; HAL_GPIO_Init
 </UL>
-<BR>[Calls]<UL><LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;begin
+<BR>[Calls]<UL><LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;begin
 <LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LiquidCrystal
 <LI><a href="#[c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_PWM_Start
-<LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_Base_Start_IT
+<LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_Base_Start_IT
 <LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_Base_Init
 <LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_PCD_Init
 <LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Init
-<LI><a href="#[10b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;createRoom
-<LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;createChars
+<LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;createRoom
+<LI><a href="#[10b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;createChars
 <LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
 <LI><a href="#[e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_USART3_UART_Init
 <LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_TIM8_Init
@@ -1622,12 +1626,13 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> entry9a.o(.ARM.Collect$$$$0000000B)
 </UL>
-<P><STRONG><a name="[77]"></a>navigateToAboutUs</STRONG> (Thumb, 74 bytes, Stack size 8 bytes, stm32f3xx_it.o(i.navigateToAboutUs))
-<BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = navigateToAboutUs &rArr; write &rArr; send &rArr; write8bits &rArr; pulseEnable &rArr; HAL_Delay
+<P><STRONG><a name="[77]"></a>navigateToAboutUs</STRONG> (Thumb, 72 bytes, Stack size 8 bytes, stm32f3xx_it.o(i.navigateToAboutUs))
+<BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = navigateToAboutUs &rArr; print &rArr; send &rArr; write8bits &rArr; pulseEnable &rArr; HAL_Delay
 </UL>
 <BR>[Calls]<UL><LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;write
 <LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setCursor
-<LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clear
+<LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print
+<LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clear
 </UL>
 <BR>[Called By]<UL><LI><a href="#[32]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI15_10_IRQHandler
 </UL>
@@ -1637,7 +1642,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setCursor
 <LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print
-<LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clear
+<LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clear
 <LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendUsart
 </UL>
 <BR>[Called By]<UL><LI><a href="#[32]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI15_10_IRQHandler
@@ -1648,8 +1653,8 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setCursor
 <LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print
-<LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clear
-<LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;blink
+<LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clear
+<LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;blink
 <LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;resetPasswordVars
 </UL>
 <BR>[Called By]<UL><LI><a href="#[32]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI15_10_IRQHandler
@@ -1660,11 +1665,10 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setCursor
 <LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print
-<LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;noBlink
-<LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clear
+<LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;noBlink
+<LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clear
 </UL>
-<BR>[Called By]<UL><LI><a href="#[31]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART3_IRQHandler
-<LI><a href="#[32]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI15_10_IRQHandler
+<BR>[Called By]<UL><LI><a href="#[32]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI15_10_IRQHandler
 </UL>
 
 <P><STRONG><a name="[7b]"></a>navigateToNewPass</STRONG> (Thumb, 54 bytes, Stack size 8 bytes, stm32f3xx_it.o(i.navigateToNewPass))
@@ -1672,8 +1676,8 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setCursor
 <LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print
-<LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clear
-<LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;blink
+<LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clear
+<LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;blink
 <LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;resetPasswordVars
 </UL>
 <BR>[Called By]<UL><LI><a href="#[32]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI15_10_IRQHandler
@@ -1684,8 +1688,8 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setCursor
 <LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print
-<LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clear
-<LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;blink
+<LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clear
+<LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;blink
 <LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;resetPasswordVars
 </UL>
 <BR>[Called By]<UL><LI><a href="#[32]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI15_10_IRQHandler
@@ -1696,7 +1700,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setCursor
 <LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print
-<LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clear
+<LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clear
 <LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendUsart
 </UL>
 <BR>[Called By]<UL><LI><a href="#[32]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI15_10_IRQHandler
@@ -1705,15 +1709,15 @@ Global Symbols
 <P><STRONG><a name="[74]"></a>navigateToStatus</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, stm32f3xx_it.o(i.navigateToStatus))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = navigateToStatus &rArr; clear &rArr; command &rArr; send &rArr; write8bits &rArr; pulseEnable &rArr; HAL_Delay
 </UL>
-<BR>[Calls]<UL><LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clear
+<BR>[Calls]<UL><LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clear
 </UL>
 <BR>[Called By]<UL><LI><a href="#[32]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI15_10_IRQHandler
 </UL>
 
-<P><STRONG><a name="[10d]"></a>noBlink</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, liquidcrystal.o(i.noBlink))
+<P><STRONG><a name="[10e]"></a>noBlink</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, liquidcrystal.o(i.noBlink))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = noBlink &rArr; command &rArr; send &rArr; write8bits &rArr; pulseEnable &rArr; HAL_Delay
 </UL>
-<BR>[Calls]<UL><LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;command
+<BR>[Calls]<UL><LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;command
 </UL>
 <BR>[Called By]<UL><LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;navigateToMainMenu
 </UL>
@@ -1729,8 +1733,8 @@ Global Symbols
 <P><STRONG><a name="[7e]"></a>print</STRONG> (Thumb, 40 bytes, Stack size 16 bytes, liquidcrystal.o(i.print))
 <BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = print &rArr; send &rArr; write8bits &rArr; pulseEnable &rArr; HAL_Delay
 </UL>
-<BR>[Calls]<UL><LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;send
-<LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strlen
+<BR>[Calls]<UL><LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;send
+<LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strlen
 </UL>
 <BR>[Called By]<UL><LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;navigateToPassChanged
@@ -1739,6 +1743,7 @@ Global Symbols
 <LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;navigateToMainMenu
 <LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;navigateToDeactive
 <LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;navigateToAlarmActivated
+<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;navigateToAboutUs
 <LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM2_IRQHandler
 <LI><a href="#[32]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI15_10_IRQHandler
 </UL>
@@ -1750,7 +1755,7 @@ Global Symbols
 <LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
 </UL>
 <BR>[Called By]<UL><LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;write8bits
-<LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;write4bits
+<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;write4bits
 </UL>
 
 <P><STRONG><a name="[72]"></a>resetPasswordVars</STRONG> (Thumb, 24 bytes, Stack size 0 bytes, stm32f3xx_it.o(i.resetPasswordVars))
@@ -1760,17 +1765,17 @@ Global Symbols
 <LI><a href="#[32]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI15_10_IRQHandler
 </UL>
 
-<P><STRONG><a name="[108]"></a>send</STRONG> (Thumb, 62 bytes, Stack size 16 bytes, liquidcrystal.o(i.send))
+<P><STRONG><a name="[109]"></a>send</STRONG> (Thumb, 62 bytes, Stack size 16 bytes, liquidcrystal.o(i.send))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = send &rArr; write8bits &rArr; pulseEnable &rArr; HAL_Delay
 </UL>
 <BR>[Calls]<UL><LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
 <LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;write8bits
-<LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;write4bits
+<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;write4bits
 </UL>
-<BR>[Called By]<UL><LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;createChar
+<BR>[Called By]<UL><LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;createChar
 <LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;write
 <LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print
-<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;command
+<LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;command
 </UL>
 
 <P><STRONG><a name="[6f]"></a>sendUsart</STRONG> (Thumb, 66 bytes, Stack size 128 bytes, stm32f3xx_it.o(i.sendUsart))
@@ -1784,6 +1789,7 @@ Global Symbols
 <LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setAlarmState
 <LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;navigateToPassChanged
 <LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;navigateToAlarmActivated
+<LI><a href="#[31]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART3_IRQHandler
 <LI><a href="#[36]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM8_UP_IRQHandler
 <LI><a href="#[23]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM1_UP_TIM16_IRQHandler
 <LI><a href="#[21]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI9_5_IRQHandler
@@ -1804,7 +1810,7 @@ Global Symbols
 <P><STRONG><a name="[78]"></a>setCursor</STRONG> (Thumb, 36 bytes, Stack size 0 bytes, liquidcrystal.o(i.setCursor))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = setCursor &rArr; command &rArr; send &rArr; write8bits &rArr; pulseEnable &rArr; HAL_Delay
 </UL>
-<BR>[Calls]<UL><LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;command
+<BR>[Calls]<UL><LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;command
 </UL>
 <BR>[Called By]<UL><LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;navigateToPassChanged
@@ -1818,10 +1824,10 @@ Global Symbols
 <LI><a href="#[32]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI15_10_IRQHandler
 </UL>
 
-<P><STRONG><a name="[101]"></a>setRowOffsets</STRONG> (Thumb, 14 bytes, Stack size 8 bytes, liquidcrystal.o(i.setRowOffsets))
+<P><STRONG><a name="[102]"></a>setRowOffsets</STRONG> (Thumb, 14 bytes, Stack size 8 bytes, liquidcrystal.o(i.setRowOffsets))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = setRowOffsets
 </UL>
-<BR>[Called By]<UL><LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;begin
+<BR>[Called By]<UL><LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;begin
 </UL>
 
 <P><STRONG><a name="[eb]"></a>turnOff7seg</STRONG> (Thumb, 48 bytes, Stack size 8 bytes, stm32f3xx_it.o(i.turnOff7seg))
@@ -1835,20 +1841,20 @@ Global Symbols
 <P><STRONG><a name="[f0]"></a>write</STRONG> (Thumb, 12 bytes, Stack size 8 bytes, liquidcrystal.o(i.write))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = write &rArr; send &rArr; write8bits &rArr; pulseEnable &rArr; HAL_Delay
 </UL>
-<BR>[Calls]<UL><LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;send
+<BR>[Calls]<UL><LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;send
 </UL>
 <BR>[Called By]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;navigateToAboutUs
 <LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM2_IRQHandler
 </UL>
 
-<P><STRONG><a name="[103]"></a>write4bits</STRONG> (Thumb, 44 bytes, Stack size 24 bytes, liquidcrystal.o(i.write4bits))
+<P><STRONG><a name="[104]"></a>write4bits</STRONG> (Thumb, 44 bytes, Stack size 24 bytes, liquidcrystal.o(i.write4bits))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = write4bits &rArr; pulseEnable &rArr; HAL_Delay
 </UL>
 <BR>[Calls]<UL><LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
 <LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pulseEnable
 </UL>
-<BR>[Called By]<UL><LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;begin
-<LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;send
+<BR>[Called By]<UL><LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;begin
+<LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;send
 </UL>
 
 <P><STRONG><a name="[110]"></a>write8bits</STRONG> (Thumb, 44 bytes, Stack size 24 bytes, liquidcrystal.o(i.write8bits))
@@ -1857,7 +1863,7 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
 <LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pulseEnable
 </UL>
-<BR>[Called By]<UL><LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;send
+<BR>[Called By]<UL><LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;send
 </UL>
 <P>
 <H3>
@@ -2053,37 +2059,37 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_ADC_Start_IT
 </UL>
 
-<P><STRONG><a name="[fb]"></a>_fp_digits</STRONG> (Thumb, 366 bytes, Stack size 64 bytes, printfa.o(i._fp_digits), UNUSED)
+<P><STRONG><a name="[fc]"></a>_fp_digits</STRONG> (Thumb, 366 bytes, Stack size 64 bytes, printfa.o(i._fp_digits), UNUSED)
 <BR><BR>[Calls]<UL><LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uldivmod
 <LI><a href="#[66]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
 <LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
 <LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 <LI><a href="#[68]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2ulz
-<LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cdrcmple
+<LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cdrcmple
 </UL>
-<BR>[Called By]<UL><LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_core
+<BR>[Called By]<UL><LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_core
 </UL>
 
-<P><STRONG><a name="[fa]"></a>_printf_core</STRONG> (Thumb, 1744 bytes, Stack size 136 bytes, printfa.o(i._printf_core), UNUSED)
+<P><STRONG><a name="[fb]"></a>_printf_core</STRONG> (Thumb, 1744 bytes, Stack size 136 bytes, printfa.o(i._printf_core), UNUSED)
 <BR><BR>[Calls]<UL><LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uldivmod
-<LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uidivmod
-<LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_pre_padding
-<LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_post_padding
-<LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_fp_digits
+<LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uidivmod
+<LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_pre_padding
+<LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_post_padding
+<LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_fp_digits
 </UL>
-<BR>[Called By]<UL><LI><a href="#[f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__0sprintf
-</UL>
-
-<P><STRONG><a name="[fe]"></a>_printf_post_padding</STRONG> (Thumb, 36 bytes, Stack size 24 bytes, printfa.o(i._printf_post_padding), UNUSED)
-<BR><BR>[Called By]<UL><LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_core
+<BR>[Called By]<UL><LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__0sprintf
 </UL>
 
-<P><STRONG><a name="[fd]"></a>_printf_pre_padding</STRONG> (Thumb, 46 bytes, Stack size 24 bytes, printfa.o(i._printf_pre_padding), UNUSED)
-<BR><BR>[Called By]<UL><LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_core
+<P><STRONG><a name="[ff]"></a>_printf_post_padding</STRONG> (Thumb, 36 bytes, Stack size 24 bytes, printfa.o(i._printf_post_padding), UNUSED)
+<BR><BR>[Called By]<UL><LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_core
+</UL>
+
+<P><STRONG><a name="[fe]"></a>_printf_pre_padding</STRONG> (Thumb, 46 bytes, Stack size 24 bytes, printfa.o(i._printf_pre_padding), UNUSED)
+<BR><BR>[Called By]<UL><LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_core
 </UL>
 
 <P><STRONG><a name="[50]"></a>_sputc</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, printfa.o(i._sputc))
-<BR><BR>[Called By]<UL><LI><a href="#[f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__0sprintf
+<BR><BR>[Called By]<UL><LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__0sprintf
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> printfa.o(i.__0sprintf)
 </UL><P>
