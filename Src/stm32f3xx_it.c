@@ -432,7 +432,7 @@ void TIM2_IRQHandler(void)
   /* USER CODE BEGIN TIM2_IRQn 0 */
 
 	light = HAL_ADC_GetValue(&hadc4);
-	scaledLight = (light - 980)*100/1100;
+	scaledLight = (light)*100/1000;
 	HAL_RTC_GetTime(&hrtc, &myTime, RTC_FORMAT_BIN);
 	HAL_RTC_GetDate(&hrtc, &myDate, RTC_FORMAT_BIN);
 	HAL_ADC_Start_IT(&hadc4);
@@ -603,6 +603,10 @@ void USART3_IRQHandler(void)
 			}
 		
 			
+		}
+		else if(strstr(uart, "Deactivate")){
+			//isAlarmActive = false;
+			setAlarmState(false);
 		}
 		
 		for(int i =0 ;i<50 ;i++)
